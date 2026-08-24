@@ -1,0 +1,482 @@
+/* ==========================================================
+   Amphi — Profil
+   Tokens + navigation communs : voir amphi-core.css / amphi-nav.css
+   inscription.css apporte .input-icon-group / .password-group / .toggle-password
+   ========================================================== */
+
+@import url("amphi-nav.css");
+@import url("inscription.css");
+
+body { background: var(--cream); }
+
+.profile-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.75rem 1rem 3.5rem;
+}
+
+/* ---------- En-tête profil ---------- */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 18px -8px rgba(60, 20, 0, 0.4);
+}
+
+.profile-identity h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.profile-sub {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin: 0.1rem 0 0.55rem;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 1.1rem;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+}
+
+.profile-stats strong { color: var(--ink); }
+
+/* ---------- Sous-onglets ---------- */
+
+.subtabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.5rem;
+}
+
+.subtab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.7rem 0.3rem;
+  margin-right: 1.2rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.subtab:hover { color: var(--orange-dark); }
+
+.subtab.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+.subpanel { display: none; }
+.subpanel.active { display: block; }
+
+/* ---------- Composeur de publication ---------- */
+
+.post-composer {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1.4rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 24px -18px rgba(60, 20, 0, 0.35);
+}
+
+.post-composer h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin: 0 0 0.9rem;
+}
+
+.composer-textarea {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.composer-textarea:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15);
+}
+
+.bg-type-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.bg-type-btn {
+  flex: 1;
+  background: var(--cream);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 0.55rem 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.bg-type-btn:hover { border-color: var(--orange); color: var(--orange-dark); }
+
+.bg-type-btn.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+
+.bg-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.swatch {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 2px 6px -2px rgba(0,0,0,0.25);
+}
+
+.swatch.selected {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--orange);
+}
+
+.custom-swatch {
+  background: repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%) 0 0 / 10px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  overflow: hidden;
+}
+
+.custom-swatch input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.gallery-thumb {
+  height: 64px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.gallery-thumb.selected {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--orange);
+}
+
+.composer-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin: 0 0 0.5rem;
+}
+
+.composer-preview {
+  border-radius: 14px;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  margin-bottom: 1.1rem;
+  background-size: cover;
+  background-position: center;
+}
+
+.composer-preview p {
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  margin: 0;
+}
+
+.composer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+}
+
+.composer-actions .btn-connect { width: auto; padding-left: 1.6rem; padding-right: 1.6rem; }
+
+.btn-cancel-edit {
+  background: none;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.btn-cancel-edit:hover { border-color: var(--orange); color: var(--orange-dark); }
+
+/* ---------- Mes publications ---------- */
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0 0 0.9rem;
+}
+
+.my-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.my-post-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.my-post-bg {
+  min-height: 150px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.my-post-bg p {
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  margin: 0;
+}
+
+.my-post-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1rem;
+}
+
+.my-post-time {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.my-post-tools { display: flex; gap: 0.4rem; }
+
+.tool-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tool-btn:hover { border-color: var(--orange); color: var(--orange-dark); }
+
+.delete-post:hover { border-color: #C43D3D; color: #C43D3D; }
+
+/* ---------- Paramètres ---------- */
+
+.settings-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.3rem;
+  margin-bottom: 1.1rem;
+}
+
+.settings-card h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.02rem;
+  margin: 0 0 1rem;
+}
+
+.settings-hint {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: -0.5rem 0 1rem;
+}
+
+.settings-save { margin-top: 1.1rem; width: auto; padding-left: 1.8rem; padding-right: 1.8rem; }
+
+.lang-select {
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  font-family: 'Inter', sans-serif;
+  max-width: 260px;
+}
+
+.lang-select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15);
+}
+
+.theme-options {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.theme-btn {
+  background: var(--cream);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.theme-btn:hover { border-color: var(--orange); color: var(--orange-dark); }
+
+.theme-btn.active {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
+}
+
+.danger-zone { text-align: center; }
+
+.btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #C43D3D;
+  border: 1.5px solid #F3C9C9;
+  border-radius: 12px;
+  padding: 0.7rem 1.6rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  background: #FFF7F7;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-logout:hover {
+  background: #C43D3D;
+  border-color: #C43D3D;
+  color: #fff;
+}
+
+/* ---------- Mode sombre (démo, propre à cette page) ---------- */
+
+html[data-theme="sombre"] body { background: #171009; color: #F2E9E0; }
+
+html[data-theme="sombre"] .top-nav { background: #201810; border-color: #3A2C1E; }
+
+html[data-theme="sombre"] .nav-tab { color: #C9BBAE; }
+
+html[data-theme="sombre"] .post-composer,
+html[data-theme="sombre"] .my-post-card,
+html[data-theme="sombre"] .settings-card {
+  background: #201810;
+  border-color: #3A2C1E;
+  color: #F2E9E0;
+}
+
+html[data-theme="sombre"] .composer-textarea,
+html[data-theme="sombre"] .form-control,
+html[data-theme="sombre"] .lang-select {
+  background: #17120D;
+  border-color: #3A2C1E;
+  color: #F2E9E0;
+}
+
+html[data-theme="sombre"] .bg-type-btn,
+html[data-theme="sombre"] .theme-btn,
+html[data-theme="sombre"] .tool-btn,
+html[data-theme="sombre"] .btn-cancel-edit {
+  background: #17120D;
+  border-color: #3A2C1E;
+  color: #C9BBAE;
+}
+
+html[data-theme="sombre"] .profile-sub,
+html[data-theme="sombre"] .profile-stats,
+html[data-theme="sombre"] .my-post-time,
+html[data-theme="sombre"] .settings-hint,
+html[data-theme="sombre"] .section-title,
+html[data-theme="sombre"] .input-icon-group label {
+  color: #C9BBAE;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 420px) {
+  .profile-header { gap: 0.85rem; }
+  .profile-avatar { width: 68px; height: 68px; }
+  .gallery { grid-template-columns: repeat(3, 1fr); }
+}

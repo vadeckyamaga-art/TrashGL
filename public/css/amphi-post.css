@@ -1,0 +1,127 @@
+/* ==========================================================
+   Amphi — Carte de publication (partagée)
+   Utilisée par le fil (accueil.html) et "Mes publications"
+   (profil.html).
+   ========================================================== */
+
+@import url("amphi-core.css");
+
+.post-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1.1rem 1.1rem 0.4rem;
+  box-shadow: 0 10px 24px -18px rgba(60, 20, 0, 0.35);
+}
+
+/* ---------- En-tête de publication ---------- */
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.post-identity {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.post-name {
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: var(--ink);
+}
+
+.post-time {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- Texte sur fond couleur / dégradé / image ---------- */
+
+.post-text-bg {
+  border-radius: 14px;
+  min-height: 220px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.post-text-bg p {
+  color: #fff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  margin: 0;
+  max-width: 30rem;
+}
+
+/* ---------- Actions ---------- */
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid var(--line);
+  padding: 0.35rem 0;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.action-btn i { font-size: 0.95rem; }
+
+.action-btn:hover {
+  color: var(--orange-dark);
+  background: var(--cream);
+}
+
+.action-btn .count {
+  color: inherit;
+  font-weight: 600;
+}
+
+.action-btn.danger:hover {
+  color: #D9432E;
+  background: #FDEDEA;
+}
+
+@media (max-width: 420px) {
+  .post-text-bg p { font-size: 1.12rem; }
+}

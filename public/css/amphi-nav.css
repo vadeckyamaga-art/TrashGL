@@ -1,0 +1,83 @@
+/* ==========================================================
+   Amphi — Navigation principale (4 onglets)
+   Importé par toutes les pages internes (accueil, notifications,
+   messages, profil...).
+   ========================================================== */
+
+@import url("amphi-core.css");
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: 10px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.nav-tab i { font-size: 1.15rem; }
+
+.nav-tab:hover {
+  color: var(--orange-dark);
+  background: var(--cream);
+}
+
+.nav-tab.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+/* Pastille de compteur (notifications non lues, messages non lus...) */
+
+.nav-badge {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #fff;
+}
+
+@media (max-width: 420px) {
+  .nav-tab span:not(.nav-badge) { display: none; }
+  .nav-tab { padding: 0.5rem 0.6rem; }
+}

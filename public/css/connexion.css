@@ -1,0 +1,397 @@
+/* ==========================================================
+   Amphi — Connexion
+   Tokens couleur/typo/logo communs : voir amphi-core.css
+   ========================================================== */
+
+@import url("amphi-core.css");
+
+/* ---------- Panneau de marque (gauche / bannière sur mobile) ---------- */
+
+.brand-panel {
+  position: relative;
+  color: #fff;
+  padding: 4rem 3.5rem;
+  overflow: hidden;
+  background: linear-gradient(160deg, var(--orange) 0%, var(--orange-dark) 55%, var(--orange-deep) 100%);
+}
+
+.brand-panel::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255,255,255,0.18), transparent 45%),
+    linear-gradient(160deg, var(--orange) 0%, var(--orange-dark) 55%, var(--orange-deep) 100%);
+  background-size: 160% 160%;
+  animation: gradientShift 14s ease-in-out infinite;
+}
+
+.brand-panel .logo-mark {
+  background: rgba(255,255,255,0.16);
+  color: #fff;
+}
+
+.brand-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  animation: fadeSlideUp 0.7s ease both;
+}
+
+.brand-message {
+  margin-top: 3rem;
+}
+
+.brand-message h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.1rem, 3vw, 2.9rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.1rem;
+}
+
+.brand-message p {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.86);
+  max-width: 26rem;
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 30%; }
+  50%  { background-position: 100% 70%; }
+  100% { background-position: 0% 30%; }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatCardBack {
+  0%, 100% { transform: rotate(-6deg) translateY(0) translateX(0); }
+  50%      { transform: rotate(-9deg) translateY(-22px) translateX(-6px); }
+}
+
+@keyframes floatCardFront {
+  0%, 100% { transform: rotate(3deg) translateY(0) scale(1); }
+  50%      { transform: rotate(6deg) translateY(-26px) scale(1.03); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-panel::before,
+  .brand-content,
+  .form-wrapper,
+  .card-back,
+  .card-front {
+    animation: none !important;
+  }
+}
+
+/* ---------- Signature : aperçu du fil ---------- */
+
+.feed-preview {
+  position: relative;
+  margin-top: 3.5rem;
+  height: 190px;
+}
+
+.preview-card {
+  position: absolute;
+  width: 300px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 24px 40px -12px rgba(60, 20, 0, 0.35);
+}
+
+.card-back {
+  left: 30px;
+  top: 0;
+  transform: rotate(-6deg);
+  opacity: 0.9;
+  height: 78px;
+  overflow: hidden;
+  animation: floatCardBack 3.2s ease-in-out infinite;
+}
+
+.card-front {
+  left: 0;
+  top: 46px;
+  transform: rotate(3deg);
+  animation: floatCardFront 3.6s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.preview-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avatar-a { background: linear-gradient(135deg, var(--orange), var(--orange-dark)); }
+.avatar-b { background: #E7DAcb; }
+
+.preview-lines { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.line-name, .line-time, .line-text {
+  display: block;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.line-name { width: 74px; }
+.line-time { width: 40px; background: #F5EBE1; }
+.line-text { margin-top: 0.55rem; }
+.w-75 { width: 75%; }
+.w-100 { width: 100%; }
+.w-50 { width: 50%; }
+
+.preview-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.85rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.preview-actions i { color: var(--orange); margin-right: 0.3rem; }
+
+/* ---------- Panneau formulaire (droite) ---------- */
+
+.form-panel {
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 400px;
+  animation: fadeSlideUp 0.7s ease both;
+  animation-delay: 0.15s;
+}
+
+.form-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 0.35rem;
+}
+
+.form-subtitle {
+  color: var(--ink-soft);
+  margin-bottom: 2.2rem;
+  font-size: 0.98rem;
+}
+
+/* ---------- Champs ---------- */
+
+.input-icon-group .form-control {
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding-left: 1rem;
+  height: 58px;
+  font-family: 'Inter', sans-serif;
+}
+
+.input-icon-group .form-control:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15);
+}
+
+.input-icon-group label {
+  color: var(--ink-soft);
+  padding-left: 1rem;
+}
+
+.input-icon-group label i {
+  color: var(--orange);
+  width: 1.1rem;
+  margin-right: 0.4rem;
+}
+
+.link-forgot {
+  color: var(--orange-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.link-forgot:hover { color: var(--orange-deep); }
+
+/* ---------- Se souvenir de moi ---------- */
+
+.remember-check .form-check-input {
+  width: 1.15em;
+  height: 1.15em;
+  border: 1.5px solid var(--line);
+  border-radius: 5px;
+  margin-top: 0.05em;
+}
+
+.remember-check .form-check-input:checked {
+  background-color: var(--orange);
+  border-color: var(--orange);
+}
+
+.remember-check .form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15);
+  border-color: var(--orange);
+}
+
+.remember-check .form-check-label {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin-left: 0.35rem;
+}
+
+/* ---------- Lien inscription ---------- */
+
+.signup-link {
+  text-align: center;
+  margin-top: 1.7rem;
+  margin-bottom: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.signup-link a {
+  color: var(--orange-dark);
+  font-weight: 700;
+}
+
+.signup-link a:hover { color: var(--orange-deep); }
+
+/* ---------- Boutons ---------- */
+
+.btn-connect {
+  background: var(--orange);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.01em;
+  padding: 0.95rem;
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-connect:hover {
+  background: var(--orange-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin: 1.6rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--line);
+}
+
+.divider span { padding: 0 0.9rem; }
+
+.social-row { margin-bottom: 0.5rem; }
+
+.btn-social {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.btn-social:hover {
+  border-color: var(--orange);
+  background: #FFF9F5;
+  color: var(--ink);
+}
+
+.btn-social .fa-google { color: #E4560A; }
+.btn-social .fa-facebook-f { color: #B93F00; }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 991.98px) {
+  .form-panel { min-height: auto; padding: 2.5rem 1.5rem 3rem; }
+
+  .brand-panel {
+    height: 25vh;
+    min-height: 170px;
+    max-height: 260px;
+    padding: 1.4rem 1.5rem;
+  }
+
+  .brand-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    height: 100%;
+  }
+
+  .brand-message { margin-top: 0; }
+
+  .brand-message h1 {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin-bottom: 0;
+  }
+
+  .brand-message p {
+    display: none;
+  }
+
+  .feed-preview {
+    display: block;
+    position: absolute;
+    right: -10px;
+    bottom: -45px;
+    margin: 0;
+    height: auto;
+    transform: scale(0.55);
+    transform-origin: bottom right;
+    opacity: 0.95;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .form-title { font-size: 1.7rem; }
+  .brand-panel { height: 22vh; min-height: 150px; }
+  .brand-message h1 { font-size: 1.02rem; }
+}

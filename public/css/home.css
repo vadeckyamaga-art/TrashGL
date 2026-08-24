@@ -1,0 +1,140 @@
+/* ==========================================================
+   Amphi — Accueil (fil de publications)
+   Tokens + navigation + carte de publication : voir
+   amphi-core.css / amphi-nav.css / amphi-post.css
+   ========================================================== */
+
+@import url("amphi-nav.css");
+@import url("amphi-post.css");
+
+body { background: var(--cream); }
+
+/* ---------- Fil ---------- */
+
+.feed {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ---------- Bouton suivre (spécifique au fil) ---------- */
+
+.follow-btn {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.follow-btn:hover {
+  background: var(--orange-dark);
+  transform: scale(1.08);
+}
+
+/* ---------- Commentaires ---------- */
+
+.comments-section {
+  border-top: 1px solid var(--line);
+  padding: 0.9rem 0 1rem;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 0.85rem;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.comment-bubble {
+  background: var(--cream);
+  border-radius: 14px;
+  padding: 0.5rem 0.85rem;
+  max-width: 85%;
+}
+
+.comment-name {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.1rem;
+}
+
+.comment-text {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.comment-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.comment-input {
+  flex: 1;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: #fff;
+}
+
+.comment-input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15);
+}
+
+.comment-submit {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--orange);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.comment-submit:hover {
+  background: var(--orange-dark);
+  transform: scale(1.05);
+}
