@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function showLoginForm () {
+        //dd(session()->all());
+        \Log::info("session au chargement de /login", session()->all());
         return view('login');
     }
 
@@ -26,9 +28,10 @@ class LoginController extends Controller
                 ->withErrors(['email' => 'Adresse email ou mot de passe incorrect!']);
         }
 
+        session()->flash('success', 'Connexion réuissie, redirection en cours ...');
         $request->session()->regenerate();
 
-        return redirect()->route('login')->with('success', 'Connexion réuissie, redirection en cours ...');
+        return redirect()->route('login.form');
     }
 
     public function logout (Request $request)
@@ -38,6 +41,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login.form');
     }
 }

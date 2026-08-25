@@ -37,7 +37,6 @@ class GoogleController extends Controller
                 ]);
                 $isNewAccount = true;
             }
-
         }
         Auth::login($user, remember: true);
 

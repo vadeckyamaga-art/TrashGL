@@ -26,6 +26,6 @@ class RegisterController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect()->route('register')->with('success', 'Compte créer avec succes, connexion en cours ...');
+        return redirect()->route('register.form')->with('success', 'Compte créer avec succes, redirection en cours ...');
     }
 }

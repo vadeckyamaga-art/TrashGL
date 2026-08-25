@@ -35,23 +35,35 @@ tout de façon anonyme
 
 ## Structure du projet
 
-```
-mon-projet/
-├── .env / .env.example / .gitignore / README.md
-├── backend/
-│   └── src/
-│       ├── config/       (connexion PostgreSQL)
-│       ├── models/       (requêtes SQL par ressource)
-│       ├── controllers/  (logique métier)
-│       ├── routes/       (endpoints Express)
-│       ├── middlewares/  (auth, rateLimiter, errorHandler)
-│       └── utils/        (generateTrackingCode, sendEmail)
+TrashGL/
+├── .env / .env.example / .gitignore / README.md /.gitattributes
+├── app/
+│  └── Http\Controllers/    (Authentification Goggle, Authentifcation manuelle et redirect)
+│  └── Modesls/             (Création des différentes classe de table)
+│  └── Poviders/
+├── bootstrap/
+├── config/
+├── database/
+│  └── migrations/          (Création des tables et contraintes relationnelle)
+├── public/
+│  └── css/
+│  └── js/
+├── resources/
+│  └── css/
+│  └── documents/
+│  └── js/
+│  └── views/
+│       ├── components/
+├── routes/
+├── storage/
+├── test/
+├── vendor/
 └──  
 
 ## Démarrage rapide
+
 php artisan serve
  
-
 ## État d'avancement
 
 - [x] Migrations MySQL (`TrashGL/database/migrations/`)
@@ -61,12 +73,13 @@ php artisan serve
 - [x] interface d'inscription (`TrashGL/ressources/views/register.blade.php`)
 - [x] Routes définies ('register', 'regiter.form', 'login', 'login.form', ...)
 - [x] Module d'authentification avec redirection (authentification manuelle et avec google)
+- [x] module de modification des paramètres utilisateurs, avec auth et redirection
 - [ ] Création du premier compte admin
 - [ ] Implémentation des routes témoignages
 - [ ] Implémentation des routes contact / profil / notification / messages
 - [ ] Système de modération admin
 
-
+<br><br><br><br><br><br><br><br><br><br>
 
 
 

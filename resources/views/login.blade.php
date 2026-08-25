@@ -3,6 +3,14 @@
     <title>TrashGl - Connexion</title>
 </head>
 <body>
+
+    {{-- <pre style="background: yellow; color:black; padding: 10px">
+        DEBUG ERRORS: {{ $errors->any() ? 'OUI - '.$errors->first(): 'NON' }}
+        DEBUG SUCCES: {{ session('success') ?? 'AUCUNE' }}
+        DEBUG SESSION ID: {{ session()->getId() }}
+        DEBUG TEST_DIRECT: {{ session('TEST8DIRECT') ?? 'AUCUNE' }}
+    </pre> --}}
+
     <div class="container-fluid p-0">
         <div class="row g-0 min-vh-100">
 
@@ -67,7 +75,7 @@
                         @csrf
 
                         <div class="form-floating mb-3 input-icon-group">
-                            <input type="email" class="form-control" id="adresse" name="email" placeholder="nom@etablissement.fr" required>
+                            <input type="email" class="form-control" id="adresse" name="email" value="{{ old('email') }}" placeholder="nom@etablissement.fr" required>
                             <label for="adresse"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
                         </div>
 
@@ -115,29 +123,6 @@
     </div>
 
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
-
-    @if ($errors->any())
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                showToast(@json($errors->first()), 'error');
-            });
-        </script>
-    @endif
-
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                showToast(@json(session('success')), 'success');
-                setTimeout(function (){
-                    window.location.href = '{{ route('welcome') }}';
-                }, 1500);
-            });
-        </script>
-    @endif
-    <script>
-        //showToast('Connexion réussie, bienvenue !', 'success');
-        //setTimeout(function () { window.location.href = 'accueil.html'; }, 1200);
-    </script>
-
+    @include('components.login-register-messages')
 </body>
 </html>

@@ -24,6 +24,6 @@ function showToast(message, type) {
 
     setTimeout(function () {
         toast.classList.remove('show');
-        setTimeout(function () { toast.remove(); }, 300);
+        setTimeout(function () { toast.remove(); }, 1500);
     }, 3200);
 }

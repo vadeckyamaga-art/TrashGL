@@ -69,7 +69,7 @@
                         @csrf
 
                         <div class="form-floating mb-3 input-icon-group">
-                            <input type="email" class="form-control" id="adresse" name="adresse" value="{{ old('email') }}" placeholder="nom@etablissement.fr" required>
+                            <input type="email" class="form-control" id="adresse" name="email" value="{{ old('email') }}" placeholder="nom@etablissement.fr" required>
                             <label for="adresse"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
                         </div>
 
@@ -79,7 +79,7 @@
                         </div>
 
                         <div class="form-floating mb-3 input-icon-group password-group">
-                            <input type="password" class="form-control" id="mot-de-passe" name="mot_de_passe" placeholder="Mot de passe" required>
+                            <input type="password" class="form-control" id="mot-de-passe" name="password" placeholder="Mot de passe" required>
                             <label for="mot-de-passe"><i class="fa-solid fa-lock"></i> Mot de passe</label>
                             <button type="button" class="toggle-password" data-target="mot-de-passe" aria-label="Afficher le mot de passe">
                                 <i class="fa-solid fa-eye"></i>
@@ -130,26 +130,7 @@
     </div>
 
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
-
-    @if ($errors->any())
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                showToast(@json($errors->first()), 'error');
-            });
-        </script>
-    @endif
-
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                showToast(@json(session('success')), 'success');
-                setTimeout(function (){
-                    window.location.href = '{{ route('welcome') }}';
-                }, 1500);
-            });
-        </script>
-    @endif
-
+    @include('components.login-register-messages')
     <script src="{{ asset('js/togglePassword.js') }}" defer></script>
 
 </body>
