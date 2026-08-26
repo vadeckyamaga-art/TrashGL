@@ -14,10 +14,10 @@ document.querySelectorAll('.btn-comment-toggle').forEach(function (btn) {
         btn.setAttribute('aria-expanded', 'false');
       }
     });
-  });
+});
 
-  // Publier un commentaire dans le fil (uniquement côté client, pour la démo)
-  function publierCommentaire(card) {
+// Publier un commentaire dans le fil
+function publierCommentaire(card) {
     var input = card.querySelector('.comment-input');
     var texte = input.value.trim();
     if (texte === '') return;
@@ -28,8 +28,8 @@ document.querySelectorAll('.btn-comment-toggle').forEach(function (btn) {
     nouveauCommentaire.innerHTML =
       '<img src="https://i.pravatar.cc/150?img=5" alt="Ta photo de profil" class="comment-avatar">' +
       '<div class="comment-bubble">' +
-      '<span class="comment-name">Toi</span>' +
-      '<p class="comment-text"></p>' +
+        '<span class="comment-name">Toi</span>' +
+        '<p class="comment-text"></p>' +
       '</div>';
     nouveauCommentaire.querySelector('.comment-text').textContent = texte;
     liste.appendChild(nouveauCommentaire);
@@ -39,25 +39,25 @@ document.querySelectorAll('.btn-comment-toggle').forEach(function (btn) {
 
     input.value = '';
     liste.scrollTop = liste.scrollHeight;
-  }
+}
 
-  document.querySelectorAll('.comment-submit').forEach(function (btn) {
+document.querySelectorAll('.comment-submit').forEach(function (btn) {
     btn.addEventListener('click', function () {
       publierCommentaire(btn.closest('.post-card'));
     });
-  });
+});
 
-  document.querySelectorAll('.comment-input').forEach(function (input) {
+document.querySelectorAll('.comment-input').forEach(function (input) {
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();
         publierCommentaire(input.closest('.post-card'));
       }
     });
-  });
+});
 
-  // Bouton "suivre" sur la photo de profil
-  document.querySelectorAll('.follow-btn').forEach(function (btn) {
+// Bouton "suivre" sur la photo de profil
+document.querySelectorAll('.follow-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var card = btn.closest('.post-card');
       var nom = card.querySelector('.post-name').textContent;
@@ -71,4 +71,4 @@ document.querySelectorAll('.btn-comment-toggle').forEach(function (btn) {
       btn.setAttribute('aria-label', 'Abonné à ' + nom);
       showToast('Vous suivez désormais ' + nom, 'success');
     });
-  });
+});

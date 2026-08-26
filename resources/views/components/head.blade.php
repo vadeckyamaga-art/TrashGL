@@ -12,6 +12,8 @@
     <link rel="preconnect" href="{{ url('https://fonts.googleapis.com') }}">
     <link href="{{ url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap') }}" rel="stylesheet"> --}}
 
-    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/banner.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/toggle-password.css') }}">
 

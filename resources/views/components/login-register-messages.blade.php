@@ -7,6 +7,7 @@
 @endif
 @if (session('success'))
     <script>
+        console.log("Le message de success est bien passée!");
         document.addEventListener('DOMContentLoaded', function () {
             showToast(@json(session('success')), 'success');
             setTimeout(function (){

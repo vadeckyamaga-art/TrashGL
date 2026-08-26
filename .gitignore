@@ -27,3 +27,4 @@ Homestead.yaml
 Thumbs.db
 *.min.css
 *.min.js
+/fontawesome

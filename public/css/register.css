@@ -1,0 +1,24 @@
+/* ==========================================================
+   Amphi — Inscription
+   Réutilise les tokens couleur/typo et les styles de layout
+   déjà définis dans connexion.css (panneau de marque, panneau
+   formulaire, champs, boutons). Ce fichier n'ajoute que ce qui
+   est propre à l'inscription.
+   ========================================================== */
+
+@import url("login.css");
+
+/* ---------- Case "conditions d'utilisation" ---------- */
+
+.remember-check .terms-link {
+  color: var(--orange-dark);
+  font-weight: 600;
+}
+
+.remember-check .terms-link:hover { color: var(--orange-deep); }
+
+/* ---------- Ajustement colonnes Prénom / Nom ---------- */
+
+@media (max-width: 380px) {
+  .row.g-3 .col-6 { flex: 0 0 100%; max-width: 100%; }
+}

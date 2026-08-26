@@ -10,11 +10,23 @@ class LoginController extends Controller
     public function showLoginForm () {
         //dd(session()->all());
         \Log::info("session au chargement de /login", session()->all());
+
+        \Log::info('SHOW LOGIN FORM', [
+            'session_id' => session()->getId(),
+            'authenticated' => auth()->check(),
+            'user_id' => auth()->id(),
+            'success_in_session' => session('success'),
+        ]);
+
         return view('login');
     }
 
     public function login (Request $request)
     {
+        \Log::info('SESSION ID AVANT ATTEMPT', [
+            'id' => session()->getId(),
+        ]);
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -29,7 +41,10 @@ class LoginController extends Controller
         }
 
         session()->flash('success', 'Connexion réuissie, redirection en cours ...');
-        $request->session()->regenerate();
+
+        \Log::info('SESSION ID APRES ATTEMPT', [
+            'id' => session()->getId(),
+        ]);
 
         return redirect()->route('login.form');
     }

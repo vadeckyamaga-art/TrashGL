@@ -25,3 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profil', [ProfilController::class, 'updateProfil'])->name('profil.update');
 });
 
+Route::get('/test-flash', function () {
+    return redirect('/login')->with('success', 'Test flash!');
+});
+
