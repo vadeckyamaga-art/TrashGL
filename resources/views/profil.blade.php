@@ -34,8 +34,8 @@
             </button>
         </div>
 
-        @include('components.banner')
-
+        @include('components.banner')<br>
+        
         <!-- ============ Sous-onglet : Publications ============ -->
         <section id="panel-post" class="subpanel active">
             <div class="post-composer">
@@ -95,8 +95,8 @@
                     <div class="row g-3">
                         <div class="col-6">
                             <div class="form-floating input-icon-group">
-                                <input type="text" class="form-control" name="name" id="param-nom" value="{{ old('name', $user->name) }}">
-                                <label for="param-nom"><i class="fa-solid fa-user"></i> Nom Ou Prénom</label>
+                                <input type="text" class="form-control" name="name" id="param-name" value="{{ old('name', $user->name) }}" required>
+                                <label for="param-name"><i class="fa-solid fa-user"></i>Nom ou Prénom</label>
                             </div>
                         </div>
 
@@ -104,9 +104,9 @@
                             <div class="form-floating input-icon-group">
                                 <input type="email" class="form-control" name="email" id="param-email"
                                 value="{{ old('name', $user->email) }}"
-                                @if ($user->provider === 'Google') readonly @endif>
+                                @if ($user->provider === 'Google') readonly @endif required>
                                 @if ($user->provider === 'Google')
-                                    <p class="text-sm text-gray-500 mt-1"><i class="fa-circle-exclamation"></i> Cet adresse e-mail est gérée par ton compte Google et ne peut etre modidié içi!</p>
+                                    <p class="text-sm text-gray-500 mt-1" style="font-size: 10px"><i class="fa-circle-exclamation"></i> Cet adresse e-mail est gérée par ton compte Google et ne peut etre modidié içi!</p>
                                 @endif
                                 <label for="param-email"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
                             </div>
@@ -160,13 +160,13 @@
                     <h2>Apparence</h2>
                     <p class="settings-hint">Choisis comment Amphi s'affiche sur cet appareil.</p>
                     <div class="theme-options">
-                        <button type="button" class="theme-btn active" data-theme="clair">
+                        <button type="button" class="theme-btn active" data-theme="ligth">
                             <i class="fa-solid fa-sun"></i> Clair
                         </button>
-                        <button type="button" class="theme-btn" data-theme="sombre">
+                        <button type="button" class="theme-btn" data-theme="dark">
                             <i class="fa-solid fa-moon"></i> Sombre
                         </button>
-                        <button type="button" class="theme-btn" data-theme="systeme">
+                        <button type="button" class="theme-btn" data-theme="system">
                             <i class="fa-solid fa-circle-half-stroke"></i> Par défaut
                         </button>
                     </div>
@@ -184,6 +184,7 @@
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
     @include('components.messages')
     <script src="{{ asset('js/profil.js') }}" defer></script>
+    <script src="{{ asset('js/appareance.js') }}" defer></script>
 
 </body>
 </html>

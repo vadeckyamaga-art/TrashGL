@@ -48,7 +48,7 @@ class User extends Authenticatable
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($user) {
             $lastId = static::orderByDesc('id')->value('id');
             $number = $lastId ? (int) substr($lastId, 5) +1 : 1;

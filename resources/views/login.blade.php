@@ -17,7 +17,7 @@
             <!-- Panneau de marque -->
             <div class="col-lg-6 d-none d-lg-flex brand-panel">
                 <div class="brand-content">
-                    <a href="index.html" class="brand-logo">
+                    <a href="" class="brand-logo">
                         <span class="logo-mark"><i class="fa-solid fa-graduation-cap"></i></span>
                         Amphi
                     </a>

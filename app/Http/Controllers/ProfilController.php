@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ProfilController extends Controller
 {
     public function editProfil () {
-        return view('profil.edit', ['user' => Auth::user()]);
+        \Log::info('SHOW PROFIL FORM', [
+            'session_id' => session()->getId(),
+            'authenticated' => auth()->check(),
+            'user_id' => auth()->id(),
+        ]);
+        return view('profil', ['user' => Auth::user()]);
     }
 
     public function updateProfil (Request $request) {

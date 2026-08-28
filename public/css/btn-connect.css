@@ -1,0 +1,17 @@
+.btn-connect {
+  background: var(--orange);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.01em;
+  padding: 0.95rem;
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-connect:hover {
+  background: var(--orange-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}

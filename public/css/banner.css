@@ -22,24 +22,6 @@
   margin-bottom: 0.75rem;
 }
 
-.ad-close {
-  position: absolute;
-  top: 0.9rem;
-  right: 0.9rem;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: none;
-  background: var(--cream);
-  color: var(--ink-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-}
-
-.ad-close:hover { background: var(--line); color: var(--ink); }
-
 .ad-content {
   display: flex;
   align-items: center;
