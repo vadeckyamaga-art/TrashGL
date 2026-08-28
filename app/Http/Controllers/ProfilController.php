@@ -25,7 +25,7 @@ class ProfilController extends Controller
         $validated = $request->validate($rules);
 
         $user->update($validated);
-        
+
         return redirect()->route('profil.edit')->with('success', 'Informations mis à jour avec succès');
     }
 }

@@ -41,9 +41,9 @@ class GoogleController extends Controller
         Auth::login($user, remember: true);
 
         if ($isNewAccount) {
-            return redirect()->route('register')->with('success', 'Compte créer avec succes, connexion en cours ...');
+            return redirect()->route('login.form')->with('success', 'Compte créer avec succes, veuillez vous connectez ...');
         }
 
-        return redirect()->route('login')->with('success', 'Connexion réuissie, redirection en cours ...');
+        return redirect()->route('welcome')->with('success', 'Connexion réuissie, bienvenue sur TrashGL ...');
     }
 }

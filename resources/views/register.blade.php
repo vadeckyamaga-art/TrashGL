@@ -110,7 +110,7 @@
 
     <script src="{{ asset('js/togglePassword.js') }}" defer></script>
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
-    @include('components.login-register-messages')
+    @include('components.messages')
 
 </body>
 </html>

@@ -16,6 +16,7 @@ class LoginController extends Controller
             'authenticated' => auth()->check(),
             'user_id' => auth()->id(),
             'success_in_session' => session('success'),
+            'test_key_xyz' => session('test_key_xyz'),
         ]);
 
         return view('login');
@@ -38,15 +39,14 @@ class LoginController extends Controller
                 ->withInput($request->only('email'))
                 ->with('success', null)
                 ->withErrors(['email' => 'Adresse email ou mot de passe incorrect!']);
+        } else {
+            \Log::info('SESSION ID APRES ATTEMPT', [
+                'id' => session()->getId(),
+            ]);
+
+            return redirect()->route('welcome')->with('success', 'Connexion réuissie, bienvenue sur TrashGL ...');
         }
 
-        session()->flash('success', 'Connexion réuissie, redirection en cours ...');
-
-        \Log::info('SESSION ID APRES ATTEMPT', [
-            'id' => session()->getId(),
-        ]);
-
-        return redirect()->route('login.form');
     }
 
     public function logout (Request $request)

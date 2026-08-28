@@ -5,6 +5,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +20,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('/register', [RegisterController::class, 'Register'])->name('register');
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
+
+Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('notifications.feed');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfilController::class, 'editProfil'])->name('profil.edit');
