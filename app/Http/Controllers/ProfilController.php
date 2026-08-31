@@ -9,11 +9,6 @@ use Illuminate\Validation\Rule;
 class ProfilController extends Controller
 {
     public function editProfil () {
-        \Log::info('SHOW PROFIL FORM', [
-            'session_id' => session()->getId(),
-            'authenticated' => auth()->check(),
-            'user_id' => auth()->id(),
-        ]);
         return view('profil', ['user' => Auth::user()]);
     }
 

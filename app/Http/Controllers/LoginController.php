@@ -8,24 +8,11 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function showLoginForm () {
-        //dd(session()->all());
-        \Log::info("session au chargement de /login", session()->all());
-
-        \Log::info('SHOW LOGIN FORM', [
-            'session_id' => session()->getId(),
-            'authenticated' => auth()->check(),
-            'user_id' => auth()->id(),
-            'success_in_session' => session('success'),
-        ]);
-
         return view('login');
     }
 
     public function login (Request $request)
     {
-        \Log::info('SESSION ID AVANT ATTEMPT', [
-            'id' => session()->getId(),
-        ]);
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -39,10 +26,6 @@ class LoginController extends Controller
                 ->with('success', null)
                 ->withErrors(['email' => 'Adresse email ou mot de passe incorrect!']);
         }
-        
-        \Log::info('SESSION ID APRES ATTEMPT', [
-            'id' => session()->getId(),
-        ]);
 
         $request->session()->regenerateToken();
 
@@ -57,6 +40,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.form');
+        return redirect()->route('login.form')->with('success', 'Deconnexion réuissie, à très bientot sur TrashGL!');
     }
 }

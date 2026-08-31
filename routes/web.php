@@ -21,6 +21,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [RegisterController::class, 'Register'])->name('register');
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 
+Route::post('/register/verify-email', [RegisterController::class, 'verifyEmail'])->name('register.verify.email');
+
 Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('notifications.feed');
 
 Route::middleware('auth')->group(function () {
@@ -28,7 +30,4 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profil', [ProfilController::class, 'updateProfil'])->name('profil.update');
 });
 
-Route::get('/test-flash', function () {
-    return redirect('/login')->with('success', 'Test flash!');
-});
 

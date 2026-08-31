@@ -35,7 +35,7 @@
         </div>
 
         @include('components.banner')<br>
-        
+
         <!-- ============ Sous-onglet : Publications ============ -->
         <section id="panel-post" class="subpanel active">
             <div class="post-composer">
@@ -181,8 +181,11 @@
         </section>
     </main>
 
-    <script src="{{ asset('js/messagesBox.js') }}" defer></script>
+    @include('components.verification-email-modal')
     @include('components.messages')
+    
+    <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+    <script src="{{ asset('js/messagesBox.js') }}" defer></script>
     <script src="{{ asset('js/profil.js') }}" defer></script>
     <script src="{{ asset('js/appareance.js') }}" defer></script>
 

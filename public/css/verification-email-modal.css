@@ -1,0 +1,99 @@
+/* ---------- Modale de vérification e-mail (code à 6 chiffres) ---------- */
+
+.verify-modal {
+    border-radius: 20px;
+    border: none;
+}
+
+.verify-body {
+    padding: 2.2rem 1.8rem;
+    text-align: center;
+}
+
+.verify-header { margin-bottom: 1.6rem; }
+
+.verify-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+}
+
+.verify-subtitle {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.otp-row {
+    display: flex;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-bottom: 1.6rem;
+    transition: opacity 0.2s ease;
+}
+
+.otp-box {
+    width: 46px;
+    height: 56px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.otp-box:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 106, 26, 0.15);
+}
+
+.otp-row.checking .otp-box {
+    background: #F0EBE6;
+    border-color: #E3DAD1;
+    color: var(--ink-soft);
+}
+
+/* ---------- Résultat de la vérification ---------- */
+
+.verify-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1.4rem;
+    animation: popIn 0.35s ease both;
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.75); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.verify-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.6rem;
+}
+
+.verify-icon.success { background: #2FAE66; }
+.verify-icon.error { background: #D9432E; }
+
+.verify-message {
+    font-weight: 600;
+    font-size: 0.96rem;
+    margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .verify-result { animation: none; }
+}

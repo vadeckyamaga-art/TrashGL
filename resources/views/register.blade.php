@@ -1,4 +1,5 @@
 @include('components.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
     <title>TrashGL - Inscription</title>
 </head>
@@ -65,7 +66,7 @@
                     <h2 class="form-title">Créer un compte</h2>
                     <p class="form-subtitle">Quelques infos et te voilà dans la promo.</p>
 
-                    <form action="{{ route('register') }}" method="post">
+                    <form id="registerForm" action="{{ route('register') }}" method="post">
                         @csrf
 
                         <div class="form-floating mb-3 input-icon-group">
@@ -74,7 +75,7 @@
                         </div>
 
                         <div class="form-floating mb-3 input-icon-group">
-                            <input type="text" class="form-control" id="adresse" name="name" value="{{ old('name') }}" placeholder="Jean Dupont" required>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" placeholder="Jean Dupont" required>
                             <label for="name"><i class="fa-solid fa-envelope"></i> Nom</label>
                         </div>
 
@@ -108,9 +109,13 @@
         </div>
     </div>
 
+    <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+
+    @include('components.verification-email-modal')
+
     <script src="{{ asset('js/togglePassword.js') }}" defer></script>
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
-    @include('components.messages')
+    <script src="{{ asset('js/register-form.js') }}" defer></script>
 
 </body>
 </html>
