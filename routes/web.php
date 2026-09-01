@@ -28,6 +28,8 @@ Route::get('/notifications', [NotificationController::class, 'showNotifications'
 Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfilController::class, 'editProfil'])->name('profil.edit');
     Route::patch('/profil', [ProfilController::class, 'updateProfil'])->name('profil.update');
+    Route::post('/profil/email/request', [ProfilController::class, 'requestEmailChange'])->name('profil.email.request');
+    Route::post('/profil/email/verify', [ProfilController::class, 'verifyEmailChange'])->name('profil.email.verify');
 });
 
 

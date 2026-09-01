@@ -4,6 +4,8 @@ var verifyResult = document.getElementById('verify-result');
 var verifyIcon = document.getElementById('verify-icon');
 var verifyMessage = document.getElementById('verify-message');
 var actionBtn = document.getElementById('verify-action-btn');
+var verifyModalEl = document.getElementById('verifyModal');
+var verifyUrl = verifyModalEl.dataset.verifyUrl;
 
 
 // Vérification du code avec Laravel
@@ -20,7 +22,7 @@ function verifierCode() {
     otpBoxes.forEach(function (b) { b.disabled = true; });
     otpRow.classList.add('checking');
 
-    fetch('/register/verify-email', {
+    fetch(verifyUrl, {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json',
@@ -51,22 +53,7 @@ function verifierCode() {
         otpRow.classList.remove('checking');
 
         afficherResultat(false);
-
-        // verifyResult.hidden = false;
-
-        // verifyIcon.className = 'verify-icon error';
-        // verifyIcon.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        // verifyMessage.textContent = 'Une erreur est survenue, veuillez réessayer!'
-
-        // actionBtn.hidden = false;
-        // actionBtn.textContent = 'Réessayer';
-        // actionBtn.dataset.state = 'error';
     });
-
-    // setTimeout(function () {
-    //     var code = otpBoxes.map(function (b) { return b.value; }).join('');
-    //     afficherResultat(code === CODE_ATTENDU);
-    // }, 900);
 }
 
 // Afficher le résultat

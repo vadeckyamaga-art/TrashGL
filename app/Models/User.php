@@ -31,6 +31,7 @@ class User extends Authenticatable
         'theme',
         'email_verification_code',
         'email_verification_expires_at',
+        'pending_email',
         'email_verified_at',
     ];
 

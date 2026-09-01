@@ -8,18 +8,6 @@ document.querySelectorAll('.subtab').forEach(function (tab) {
     });
 });
 
-/* ---------- Afficher/masquer les mots de passe ---------- */
-document.querySelectorAll('.toggle-password').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        var input = document.getElementById(btn.getAttribute('data-target'));
-        var icon = btn.querySelector('i');
-        var isHidden = input.type === 'password';
-        input.type = isHidden ? 'text' : 'password';
-        icon.classList.toggle('fa-eye', !isHidden);
-        icon.classList.toggle('fa-eye-slash', isHidden);
-    });
-});
-
 /* ---------- Apparence (clair / sombre / par défaut) ---------- */
 document.querySelectorAll('.theme-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -193,4 +181,4 @@ function attacherOutilsCarte(carte) {
 
 document.querySelectorAll('.my-post-card').forEach(attacherOutilsCarte);
 
- 
+

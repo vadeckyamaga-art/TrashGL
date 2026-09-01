@@ -1,4 +1,5 @@
 @include('components.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/profil.css') }}">
     <link rel="stylesheet" href="{{ asset('css/amphi-post.css') }}">
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
@@ -88,7 +89,7 @@
             <div class="settings-card">
                 <h2>Informations personnelles</h2>
 
-                <form action="{{ route('profil.update') }}" method="post">
+                <form action="{{ route('profil.update') }}" id="profilForm" data-email-url="{{ route('profil.email.request') }}" method="post">
                     @csrf
                     @method('PATCH')
 
@@ -103,10 +104,11 @@
                         <div class="col-6">
                             <div class="form-floating input-icon-group">
                                 <input type="email" class="form-control" name="email" id="param-email"
-                                value="{{ old('name', $user->email) }}"
-                                @if ($user->provider === 'Google') readonly @endif required>
-                                @if ($user->provider === 'Google')
-                                    <p class="text-sm text-gray-500 mt-1" style="font-size: 10px"><i class="fa-circle-exclamation"></i> Cet adresse e-mail est gérée par ton compte Google et ne peut etre modidié içi!</p>
+                                value="{{ old('email', $user->email) }}"
+                                data-original-email="{{ $user->email }}"
+                                @if ($user->provider !== null) readonly @endif required>
+                                @if ($user->provider !== null)
+                                    <p class="text-sm text-gray-500 mt-1" style="font-size: 10px"><i class="fa-circle-exclamation"></i> Cet adresse e-mail est gérée par ton compte {{ $user->provider }} et ne peut etre modidié içi!</p>
                                 @endif
                                 <label for="param-email"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
                             </div>
@@ -181,12 +183,14 @@
         </section>
     </main>
 
+    <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+
     @include('components.verification-email-modal')
     @include('components.messages')
-    
-    <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
+
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
     <script src="{{ asset('js/profil.js') }}" defer></script>
+    <script src="{{ asset('js/profil-email.js') }}" defer></script>
     <script src="{{ asset('js/appareance.js') }}" defer></script>
 
 </body>

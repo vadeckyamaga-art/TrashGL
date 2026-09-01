@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/verification-email-modal.css') }}">
-<div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="verifyModal" data-verify-url="{{ $verifyUrl ?? route('register.verify.email') }}" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content verify-modal">
             <div class="modal-body verify-body">
