@@ -111,11 +111,16 @@
 
     <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
 
-    @include('components.verification-email-modal')
+   @include('components.verification-email-modal', [
+                'verifyUrl' => route('register.verify.email'),
+                'cancelUrl' => route('register.cancel'),
+            ])
+    @include('components.messages')
 
     <script src="{{ asset('js/togglePassword.js') }}" defer></script>
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
     <script src="{{ asset('js/register-form.js') }}" defer></script>
+    <script src="{{ asset('js/verification-email-modal.js') }}" defer></script>
 
 </body>
 </html>

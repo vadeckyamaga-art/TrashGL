@@ -22,7 +22,7 @@ profilForm.addEventListener('submit', function (e) {
 
         headers: {
             'Accept' : 'application/json',
-
+            'Content-Type' : 'application/json',
             'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
 
@@ -44,8 +44,10 @@ profilForm.addEventListener('submit', function (e) {
         ouvrirModalVerification();
     })
     .catch(function (error) {
-
-        if (error.errors) {
+        if (error instanceof TypeError) {
+            // Erreur réseau : le fetch n'a pas pu aboutir (requête ou réponse perdue)
+            showToast('Connexion interrompue. Vérifiez votre connexion et réessayez — un nouveau code sera envoyé.', 'error');
+        } else if (error.errors) {
             var firstMessage = Object.values(error.errors)[0][0];
             showToast(firstMessage, 'error');
 
@@ -62,3 +64,8 @@ profilForm.addEventListener('submit', function (e) {
         submitBtn.innerHTML = defaultText;
     });
 });
+function ouvrirModalVerification() {
+    var modalElement = document.getElementById('verifyModal');
+    var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.show();
+}

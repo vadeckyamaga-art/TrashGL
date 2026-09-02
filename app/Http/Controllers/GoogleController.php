@@ -13,18 +13,59 @@ class GoogleController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback () {
-        $googleUser = Socialite::driver('google')->user();
+    public function callback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+        } catch (\Exception $e) {
+            $wasEmailChange = session()->has('oauth_email_change_user_id');
+            session()->forget('oauth_email_change_user_id');
 
-        $user = User::where('provider', 'google')
+            if ($wasEmailChange) {
+                return redirect()->route('profil.edit')->with('error', 'La connexion à Google a été annulée ou a échoué.');
+            }
+
+            return redirect()->route('login.form')->with('error', 'La connexion avec Google a été annulée ou a échoué.');
+        }
+
+        // Cas : changement d'adresse e-mail initié depuis le profil
+        if ($userId = session('oauth_email_change_user_id')) {
+            session()->forget('oauth_email_change_user_id');
+
+            $user = User::findOrFail($userId);
+
+            $emailTaken = User::where('email', $googleUser->getEmail())
+                ->where('id', '!=', $user->id)
+                ->exists();
+
+            if ($emailTaken) {
+                return redirect()->route('profil.edit')->with('error', 'Cette adresse est déjà utilisée par un autre compte.');
+            }
+
+            $user->update([
+                'email' => $googleUser->getEmail(),
+                'provider' => 'Google',
+                'provider_id' => $googleUser->getId(),
+                'email_verified_at' => now(),
+            ]);
+
+            Auth::login($user, remember: true);
+
+            return redirect()->route('profil.edit')->with('success', 'Adresse e-mail mise à jour avec succès.');
+        }
+
+        // Cas normal : connexion / inscription via Google
+        $user = User::where('provider', 'Google')
             ->where('provider_id', $googleUser->getId())
             ->first();
+
         $isNewAccount = false;
+
         if (!$user) {
-            $user = User::where('email', $googleUser->getId())->first();
+            $user = User::where('email', $googleUser->getEmail())->first();
 
             if ($user) {
-                $user -> update ([
+                $user->update([
                     'provider' => 'Google',
                     'provider_id' => $googleUser->getId(),
                 ]);
@@ -38,6 +79,7 @@ class GoogleController extends Controller
                 $isNewAccount = true;
             }
         }
+
         Auth::login($user, remember: true);
 
         if ($isNewAccount) {

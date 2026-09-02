@@ -15,7 +15,8 @@ class EmailVerificationCode extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        public string $code
+        public string $code,
+        public ?string $recipientName = null
     ) {}
 
     /**
@@ -33,9 +34,10 @@ class EmailVerificationCode extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $name = $this->recipientName ?? ($notifiable->name ?? 'là');
         return (new MailMessage)
             ->subject('Verification de votre adresse e-mai')
-            ->greeting('Bonjour ' . $notifiable -> name . ' !')
+            ->greeting('Bonjour ' . $name . ' !')
             ->line('Voici votre pour vérifier votre compte sur TrashGL : ')
             ->line($this -> code)
             ->line('Ce code est valable pendant 05 minutes')

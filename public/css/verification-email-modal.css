@@ -25,6 +25,12 @@
     margin: 0;
 }
 
+.verify-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
+
 .otp-row {
     display: flex;
     justify-content: center;

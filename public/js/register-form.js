@@ -38,22 +38,19 @@ registerForm.addEventListener('submit', function (e) {
         ouvrirModalVerification();
     })
     .catch(function (error) {
-        console.error ('Erreur Laravel : ', error);
+        console.error('Erreur Laravel : ', error);
 
-        if (error.errors) {
-            console.table(error.errors);
-
+        if (error instanceof TypeError) {
+            // Erreur réseau : le fetch n'a pas pu aboutir (requête ou réponse perdue)
+            showToast('Connexion interrompue. Vérifiez votre connexion et réessayez, vous recevrez un nouveau code.', 'error');
+        } else if (error.errors) {
             var firstMessage = Object.values(error.errors)[0][0];
-
             showToast(firstMessage, 'error');
-
         } else if (error.message) {
             showToast(error.message, 'error');
-
         } else {
             showToast('Une erreur est survenue, veuillez réessayer!', 'error');
         }
-
     })
     .finally(function () {
         submitBtn.disabled = false;

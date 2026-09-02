@@ -7,6 +7,9 @@ use App\Notifications\EmailVerificationCode;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
 
 class ProfilController extends Controller
 {
@@ -21,7 +24,7 @@ class ProfilController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        $user->updated($validated);
+        $user->update($validated);
 
         return redirect()->route('profil.edit')->with('success', 'Informations mis à jour avec succès');
     }
@@ -50,7 +53,7 @@ class ProfilController extends Controller
         ]);
 
         Notification::route('mail', $validated['email'])
-            ->notify(new EmailVerificationCode($verificationCode));
+            ->notify(new EmailVerificationCode($verificationCode, $user->name));
 
         return response()->json([
             'success' => true,
@@ -78,7 +81,7 @@ class ProfilController extends Controller
             ], 400);
         }
 
-        if ($request->code !== $user->email_verification_code) {
+        if ( (string) $request->code !== (string) $user->email_verification_code) {
             return response()->json([
                 'success' => false,
                 'message' => 'Code de vérification incorrect',
@@ -92,7 +95,7 @@ class ProfilController extends Controller
         $user->email_verified_at = now();
         $user->save();
 
-        session()-flash('success', 'Adresse e-mail mise à jour avec succèss !');
+        session()->flash('success', 'Adresse e-mail mise à jour avec succèss !');
 
         return response()->json([
             'success' => true,
@@ -100,5 +103,67 @@ class ProfilController extends Controller
             'redirect' => route('profil.edit'),
         ]);
 
+    }
+
+    public function cancelEmailChange(Request $request)
+    {
+        $user = Auth::user();
+
+        $user->update([
+            'pending_email' => null,
+            'email_verification_code' => null,
+            'email_verification_expires_at' => null,
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function redirectEmailChange(string $provider)
+    {
+        session(['oauth_email_change_user_id' => Auth::id()]);
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->provider !== null) {
+            return redirect()->route('profil.edit')->with('error', 'Cette action n\'est pas disponible pour un compte connecté via ' . $user->provider . '.');
+        }
+
+        $validator = \Validator::make($request->all(), [
+            'current_password' => ['required'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('profil.edit')
+                ->withErrors($validator, 'passwordUpdate');
+        }
+
+        $validated = $validator->validated();
+
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return redirect()->route('profil.edit')
+                ->withErrors(['current_password' => 'Le mot de passe actuel est incorrect.'], 'passwordUpdate');
+        }
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect()->route('profil.edit')->with('success', 'Mot de passe mis à jour avec succès.');
+    }
+
+    public function updateLocale(Request $request)
+    {
+        $validated = $request->validate([
+            'locale' => ['required', 'in:fr,en'],
+        ]);
+
+        Auth::user()->update(['language' => $validated['locale']]);
+
+        return response()->json(['success' => true]);
     }
 }

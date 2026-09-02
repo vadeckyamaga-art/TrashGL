@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="{{ asset('css/verification-email-modal.css') }}">
-<div class="modal fade" id="verifyModal" data-verify-url="{{ $verifyUrl ?? route('register.verify.email') }}" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="verifyModal" data-verify-url="{{ $verifyUrl }}" data-cancel-url="{{ $cancelUrl ?? '' }}" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content verify-modal">
             <div class="modal-body verify-body">
-
+                <button type="button" class="btn-close verify-close" id="verify-close-btn" aria-label="Fermer"></button>
                 <div class="verify-header">
                     <h5 class="verify-title" id="verifyModalLabel">Vérifie ton adresse e-mail</h5>
                     <p class="verify-subtitle">Code envoyé à <strong id="conditions-recap">ton adresse</strong>.</p>
@@ -29,4 +29,3 @@
     </div>
 </div>
 
-<script src="{{ asset('js/verification-email-modal.js') }}" defer></script>

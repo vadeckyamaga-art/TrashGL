@@ -14,8 +14,8 @@
         <section class="profile-header">
             <img src="https://i.pravatar.cc/150?img=5" alt="Ta photo de profil" class="profile-avatar">
             <div class="profile-identity">
-                <h1>Nathan Belinga</h1>
-                <p class="profile-sub">Promo Info 2026</p>
+                <h1>{{ $user->pseudonym }}</h1>
+                <p class="profile-sub">{{ $user->name }}</p>
                 <div class="profile-stats">
                     <span><strong>12</strong> publications</span>
                     <span><strong>184</strong> abonnés</span>
@@ -104,11 +104,13 @@
                         <div class="col-6">
                             <div class="form-floating input-icon-group">
                                 <input type="email" class="form-control" name="email" id="param-email"
-                                value="{{ old('email', $user->email) }}"
-                                data-original-email="{{ $user->email }}"
-                                @if ($user->provider !== null) readonly @endif required>
+                                        value="{{ old('email', $user->email) }}"
+                                        data-original-email="{{ $user->email }}"
+                                >
                                 @if ($user->provider !== null)
-                                    <p class="text-sm text-gray-500 mt-1" style="font-size: 10px"><i class="fa-circle-exclamation"></i> Cet adresse e-mail est gérée par ton compte {{ $user->provider }} et ne peut etre modidié içi!</p>
+                                    <a href="{{ route('profil.email.oauth.redirect', ['provider' => strtolower($user->provider)]) }}" style="text-decoration: underline; color: #FF6A1A;">
+                                        Changer via {{ $user->provider }}
+                                    </a>
                                 @endif
                                 <label for="param-email"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
                             </div>
@@ -119,44 +121,52 @@
                 </form>
             </div>
 
-            <div class="settings-card">
-                <h2>Changer le mot de passe</h2>
+            @if ($user->provider === null)
+                <div class="settings-card">
+                    <h2>Changer le mot de passe</h2>
 
-                <form action="" method="POST">
-                    @csrf
+                    <form action="{{ route('profil.password.update') }}" method="POST">
+                        @csrf
+                        @method('PATCH')
 
-                    <div class="form-floating input-icon-group password-group mb-3">
-                        <input type="password" class="form-control" id="actual_password" name="password" placeholder="***********">
-                        <label for="actual_paswword"><i class="fa-solid fa-lock"></i> Mot de passe actuel</label>
-                        @include('components.toggle-password', ['target' => 'actual_password'])
-                    </div>
+                        <div class="form-floating input-icon-group password-group mb-3">
+                            <input type="password" class="form-control" id="current_password" name="current_password" placeholder="***********">
+                            <label for="actual_password"><i class="fa-solid fa-lock"></i> Mot de passe actuel</label>
+                            @include('components.toggle-password', ['target' => 'current_password'])
+                        </div>
 
-                    <div class="form-floating input-icon-group password-group mb-3">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="***********">
-                        <label for="password"><i class="fa-solid fa-lock"></i> Nouveau mot de passe</label>
-                        @include('components.toggle-password', ['target' => 'password'])
-                    </div>
+                        <div class="form-floating input-icon-group password-group mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="***********">
+                            <label for="password"><i class="fa-solid fa-lock"></i> Nouveau mot de passe</label>
+                            @include('components.toggle-password', ['target' => 'password'])
+                        </div>
 
-                    <div class="form-floating input-icon-group password-group mb-3">
-                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="***********">
-                        <label for="password_confirmation"><i class="fa-solid fa-lock"></i> Confirmer le nouveau mot de passe</label>
-                        @include('components.toggle-password', ['target' => 'password_confirmation'])
-                    </div>
+                        <div class="form-floating input-icon-group password-group mb-3">
+                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="***********">
+                            <label for="password_confirmation"><i class="fa-solid fa-lock"></i> Confirmer le nouveau mot de passe</label>
+                            @include('components.toggle-password', ['target' => 'password_confirmation'])
+                        </div>
 
-                    <button type="button" class="btn btn-connect settings-save">Mettre à jour le mot de passe</button>
-                </form>
-            </div>
+                        <button type="submit" class="btn btn-connect settings-save">Mettre à jour le mot de passe</button>
+                    </form>
+                </div>
+            @endif
 
-            <form action="" method="POST">
+            <form id="langForm" data-locale-url="{{ route('profil.locale.update') }}>
                 @csrf
 
                 <div class="settings-card">
                     <h2>Langue</h2>
-                    <select class="form-select lang-select">
-                        <option selected>Français</option>
-                        <option>English</option>
+                    <select class="form-select lang-select" name="locale">
+                        <option value="" selected disabled>-- Choisissez la langue --</option>
+                        <option value="fr" @selected($user->locale === 'fr')>Français</option>
+                        <option value="fr" @selected($user->locale === 'fr')>English</option>
                     </select>
                 </div>
+            </form>
+
+            <form action="POST">
+                @csrf
 
                 <div class="settings-card">
                     <h2>Apparence</h2>
@@ -185,12 +195,17 @@
 
     <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
 
-    @include('components.verification-email-modal')
+    @include('components.verification-email-modal',
+                [   'verifyUrl' => route('profil.email.verify'),
+                    'cancelUrl' => route('profil.email.cancel'),
+                ])
     @include('components.messages')
 
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
-    <script src="{{ asset('js/profil.js') }}" defer></script>
+    <script src="{{ asset('js/verification-email-modal.js') }}" defer></script>
     <script src="{{ asset('js/profil-email.js') }}" defer></script>
+    <script src="{{ asset('js/profil-locale.js') }}" defer></script>
+    <script src="{{ asset('js/profil.js') }}" defer></script>
     <script src="{{ asset('js/appareance.js') }}" defer></script>
 
 </body>

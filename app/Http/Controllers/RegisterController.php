@@ -14,7 +14,32 @@ class RegisterController extends Controller
         return view('register');
     }
 
-    public function Register (Request $request) {
+    public function Register(Request $request)
+    {
+        $existingUnverified = User::where('email', $request->input('email'))
+            ->whereNull('email_verified_at')
+            ->whereNull('provider')
+            ->first();
+
+        if ($existingUnverified) {
+            $verificationCode = (string) random_int(100000, 999999);
+
+            $existingUnverified->update([
+                'name' => $request->input('name'),
+                'email_verification_code' => $verificationCode,
+                'email_verification_expires_at' => now()->addMinutes(5),
+            ]);
+
+            $existingUnverified->notify(new EmailVerificationCode($verificationCode, $existingUnverified->name));
+
+            $request->session()->put('verification_email', $existingUnverified->email);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Un nouveau code de vérification a été envoyé à votre adresse e-mail',
+            ]);
+        }
+
         $validate = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
@@ -31,12 +56,9 @@ class RegisterController extends Controller
             'email_verification_expires_at' => now()->addMinutes(5),
         ]);
 
-        $user -> notify(new EmailVerificationCode($verificationCode));
+        $user->notify(new EmailVerificationCode($verificationCode, $user->name));
 
-        $request->session()->put(
-            'verification_email',
-            $user->email
-        );
+        $request->session()->put('verification_email', $user->email);
 
         return response()->json([
             'success' => true,
@@ -78,7 +100,7 @@ class RegisterController extends Controller
             ], 400);
         }
 
-        if ($request ->code !== $user->email_verification_code) {
+        if ( (string) $request ->code !== (string) $user->email_verification_code) {
             return response()->json([
                 'success' => false,
                 'message' => 'Code de vérification incorrect!'
@@ -103,5 +125,22 @@ class RegisterController extends Controller
             'message' => 'Adresse e-mail vérifiée avec success, veuillez vous connecter!',
             'redirect' => route('login.form')
         ]);
+    }
+
+    public function cancelRegistration(Request $request)
+    {
+        $email = $request->session()->get('verification_email');
+
+        if ($email) {
+            $user = User::where('email', $email)->whereNull('email_verified_at')->first();
+
+            if ($user) {
+                $user->delete();
+            }
+        }
+
+        $request->session()->forget('verification_email');
+
+        return response()->json(['success' => true]);
     }
 }

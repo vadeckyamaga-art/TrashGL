@@ -180,5 +180,3 @@ function attacherOutilsCarte(carte) {
 }
 
 document.querySelectorAll('.my-post-card').forEach(attacherOutilsCarte);
-
-

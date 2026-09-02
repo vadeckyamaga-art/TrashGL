@@ -20,8 +20,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('/register', [RegisterController::class, 'Register'])->name('register');
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
-
 Route::post('/register/verify-email', [RegisterController::class, 'verifyEmail'])->name('register.verify.email');
+Route::post('/register/cancel', [RegisterController::class, 'cancelRegistration'])->name('register.cancel');
 
 Route::get('/notifications', [NotificationController::class, 'showNotifications'])->name('notifications.feed');
 
@@ -29,7 +29,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfilController::class, 'editProfil'])->name('profil.edit');
     Route::patch('/profil', [ProfilController::class, 'updateProfil'])->name('profil.update');
     Route::post('/profil/email/request', [ProfilController::class, 'requestEmailChange'])->name('profil.email.request');
-    Route::post('/profil/email/verify', [ProfilController::class, 'verifyEmailChange'])->name('profil.email.verify');
+    Route::post('/profil/email/verify', [ProfilController::class, 'verifyEmailChanges'])->name('profil.email.verify');
+    Route::post('/profil/email/cancel', [ProfilController::class, 'cancelEmailChange'])->name('profil.email.cancel');
+    Route::post('/profil/locale', [ProfilController::class, 'updateLocale'])->name('profil.locale.update');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profil/email/oauth/{provider}', [ProfilController::class, 'redirectEmailChange'])->name('profil.email.oauth.redirect');
+});
 
+Route::patch('/profil/password', [ProfilController::class, 'updatePassword'])->name('profil.password.update');

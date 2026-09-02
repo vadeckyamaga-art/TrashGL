@@ -6,7 +6,38 @@ var verifyMessage = document.getElementById('verify-message');
 var actionBtn = document.getElementById('verify-action-btn');
 var verifyModalEl = document.getElementById('verifyModal');
 var verifyUrl = verifyModalEl.dataset.verifyUrl;
+var cancelUrl = verifyModalEl.dataset.cancelUrl;
+var closeBtn = document.getElementById('verify-close-btn');
+var verifyModalInstance = bootstrap.Modal.getOrCreateInstance(verifyModalEl);
 
+// Fermeture de la modale
+closeBtn.addEventListener('click', function () {
+    if (!cancelUrl) {
+        verifyModalInstance.hide();
+        return;
+    }
+
+    closeBtn.disabled = true;
+
+    fetch(cancelUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .finally(function () {
+        closeBtn.disabled = false;
+        verifyModalInstance.hide();
+
+        // Réinitialise les cases pour la prochaine ouverture
+        otpBoxes.forEach(function (b) { b.value = ''; b.disabled = false; });
+        verifyResult.hidden = true;
+        actionBtn.hidden = true;
+        otpRow.classList.remove('checking');
+    });
+});
 
 // Vérification du code avec Laravel
 function verifierCode() {
