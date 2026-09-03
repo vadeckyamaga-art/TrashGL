@@ -6,40 +6,19 @@ use App\Models\User;
 use App\Notifications\EmailVerificationCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
-    public function showRegisterForm(){
+    public function showRegisterForm()
+    {
         return view('register');
     }
 
     public function Register(Request $request)
     {
-        $existingUnverified = User::where('email', $request->input('email'))
-            ->whereNull('email_verified_at')
-            ->whereNull('provider')
-            ->first();
-
-        if ($existingUnverified) {
-            $verificationCode = (string) random_int(100000, 999999);
-
-            $existingUnverified->update([
-                'name' => $request->input('name'),
-                'email_verification_code' => $verificationCode,
-                'email_verification_expires_at' => now()->addMinutes(5),
-            ]);
-
-            $existingUnverified->notify(new EmailVerificationCode($verificationCode, $existingUnverified->name));
-
-            $request->session()->put('verification_email', $existingUnverified->email);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Un nouveau code de vérification a été envoyé à votre adresse e-mail',
-            ]);
-        }
-
         $validate = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
@@ -48,17 +27,17 @@ class RegisterController extends Controller
 
         $verificationCode = (string) random_int(100000, 999999);
 
-        $user = User::create([
+        Cache::put('pending_registration_' . $validate['email'], [
             'name' => $validate['name'],
             'email' => $validate['email'],
-            'password' => $validate['password'],
-            'email_verification_code' => $verificationCode,
-            'email_verification_expires_at' => now()->addMinutes(5),
-        ]);
+            'password' => Hash::make($validate['password']),
+            'code' => $verificationCode,
+        ], now()->addMinutes(5));
 
-        $user->notify(new EmailVerificationCode($verificationCode, $user->name));
+        Notification::route('mail', $validate['email'])
+            ->notify(new EmailVerificationCode($verificationCode, $validate['name']));
 
-        $request->session()->put('verification_email', $user->email);
+        $request->session()->put('verification_email', $validate['email']);
 
         return response()->json([
             'success' => true,
@@ -68,52 +47,50 @@ class RegisterController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        $request -> validate([
+        $request->validate([
             'code' => ['required', 'digits:6']
         ]);
 
         $email = $request->session()->get('verification_email');
+        $pending = $email ? Cache::get('pending_registration_' . $email) : null;
 
-        $user = User::where ('email', $email)->first();
-
-        if (!$user) {
+        if (!$pending) {
             return response()->json([
                 'success' => false,
-                'message' => 'Utilisateur introuvable!'
+                'message' => 'Aucune inscription en attente ou le code a expiré, veuillez réessayer.'
             ], 400);
         }
 
-        if (!$user -> email_verification_code) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Aucun code de vérification!'
-            ], 400);
-        }
-
-        if (
-            $user -> email_verification_expires_at &&
-            now()->greaterThan($user -> email_verification_expires_at)
-            ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Le code de vérification a expiré!'
-            ], 400);
-        }
-
-        if ( (string) $request ->code !== (string) $user->email_verification_code) {
+        if ((string) $request->code !== (string) $pending['code']) {
             return response()->json([
                 'success' => false,
                 'message' => 'Code de vérification incorrect!'
             ], 400);
         }
 
-        $user -> email_verified_at = now();
-        $user -> email_verification_code = null;
-        $user -> email_verification_expires_at = null;
+        // Sécurité : quelqu'un d'autre a pu prendre cet e-mail entre-temps
+        if (User::where('email', $pending['email'])->exists()) {
+            Cache::forget('pending_registration_' . $email);
+            $request->session()->forget('verification_email');
 
-        $user -> save();
+            return response()->json([
+                'success' => false,
+                'message' => 'Cette adresse e-mail vient d\'être utilisée par un autre compte.'
+            ], 409);
+        }
+
+        $user = User::create([
+            'name' => $pending['name'],
+            'email' => $pending['email'],
+            'password' => $pending['password'],
+            'email_verified_at' => now(),
+        ]);
+
+        Cache::forget('pending_registration_' . $email);
 
         Auth::login($user);
+
+        cookie()->queue('theme', $user->theme, 60 * 24 * 365 * 5);
 
         $request->session()->forget('verification_email');
         $request->session()->regenerate();
@@ -122,7 +99,7 @@ class RegisterController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Adresse e-mail vérifiée avec success, veuillez vous connecter!',
+            'message' => 'Adresse e-mail vérifiée avec succès, veuillez vous connecter!',
             'redirect' => route('login.form')
         ]);
     }
@@ -132,11 +109,7 @@ class RegisterController extends Controller
         $email = $request->session()->get('verification_email');
 
         if ($email) {
-            $user = User::where('email', $email)->whereNull('email_verified_at')->first();
-
-            if ($user) {
-                $user->delete();
-            }
+            Cache::forget('pending_registration_' . $email);
         }
 
         $request->session()->forget('verification_email');

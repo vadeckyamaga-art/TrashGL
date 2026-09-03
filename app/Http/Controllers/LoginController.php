@@ -29,6 +29,8 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
+        cookie()->queue('theme', Auth::user()->theme, 60 * 24 * 365 * 5);
+
         return redirect()->route('welcome')->with('success', 'Connexion réuissie, bienvenue sur TrashGL !');
 
     }

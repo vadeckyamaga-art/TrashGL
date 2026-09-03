@@ -1,11 +1,9 @@
 @include('components.head')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{ asset('css/profil.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/amphi-post.css') }}">
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <title>TrashGl - Profil</title>
 </head>
-<body>
+<body data-theme-url="{{ route('profil.theme.update') }}">
 
     @include('components.nav')
 
@@ -172,13 +170,13 @@
                     <h2>Apparence</h2>
                     <p class="settings-hint">Choisis comment Amphi s'affiche sur cet appareil.</p>
                     <div class="theme-options">
-                        <button type="button" class="theme-btn active" data-theme="ligth">
+                        <button type="button" class="theme-btn @if($user->theme === 'light') active @endif" data-theme="light">
                             <i class="fa-solid fa-sun"></i> Clair
                         </button>
-                        <button type="button" class="theme-btn" data-theme="dark">
+                        <button type="button" class="theme-btn @if($user->theme === 'dark') active @endif" data-theme="dark">
                             <i class="fa-solid fa-moon"></i> Sombre
                         </button>
-                        <button type="button" class="theme-btn" data-theme="system">
+                        <button type="button" class="theme-btn @if($user->theme === 'system') active @endif" data-theme="system">
                             <i class="fa-solid fa-circle-half-stroke"></i> Par défaut
                         </button>
                     </div>
@@ -206,7 +204,7 @@
     <script src="{{ asset('js/profil-email.js') }}" defer></script>
     <script src="{{ asset('js/profil-locale.js') }}" defer></script>
     <script src="{{ asset('js/profil.js') }}" defer></script>
-    <script src="{{ asset('js/appareance.js') }}" defer></script>
+    <script src="{{ asset('js/theme.js') }}" defer></script>
 
 </body>
 </html>

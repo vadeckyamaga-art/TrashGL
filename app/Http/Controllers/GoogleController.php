@@ -51,6 +51,8 @@ class GoogleController extends Controller
 
             Auth::login($user, remember: true);
 
+            cookie()->queue('theme', $user->theme, 60 * 24 * 365 * 5);
+
             return redirect()->route('profil.edit')->with('success', 'Adresse e-mail mise à jour avec succès.');
         }
 
@@ -81,6 +83,8 @@ class GoogleController extends Controller
         }
 
         Auth::login($user, remember: true);
+
+        cookie()->queue('theme', $user->theme, 60 * 24 * 365 * 5);
 
         if ($isNewAccount) {
             return redirect()->route('login.form')->with('success', 'Compte créer avec succes, veuillez vous connectez ...');

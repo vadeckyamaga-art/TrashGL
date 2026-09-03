@@ -1,0 +1,106 @@
+/* ---------- Mode sombre (démo, propre à cette page) ---------- */
+
+html[data-theme="dark"] body {
+    background: #171009;
+    color: #F2E9E0;
+}
+
+html[data-theme="dark"] .top-nav,
+html[data-theme="dark"] .amphi-toast {
+    background: #201810;
+    border-color: #3A2C1E;
+}
+
+html[data-theme="dark"] .amphi-toast-error {
+    border-left-color: #D9432E;
+    font-weight: bolder;
+    color: #450A0A;
+}
+
+html[data-theme="dark"] .post-composer,
+html[data-theme="dark"] .post-card,
+html[data-theme="dark"] .quick-post,
+html[data-theme="dark"] .settings-card {
+    background: #201810;
+    border-color: #3A2C1E;
+    color: #F2E9E0;
+}
+
+html[data-theme="dark"] .composer-textarea,
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .lang-select {
+    background: #17120D;
+    border-color: #3A2C1E;
+    color: #F2E9E0;
+}
+
+html[data-theme="dark"] .bg-type-btn,
+html[data-theme="dark"] .theme-btn,
+html[data-theme="dark"] .tool-btn,
+html[data-theme="dark"] .comment-input,
+html[data-theme="dark"] .notif-item,
+html[data-theme="dark"] .btn-cancel-edit {
+    background: #17120D;
+    border-color: #3A2C1E;
+    color: #C9BBAE;
+}
+
+html[data-theme="dark"] .comment-submit,
+html[data-theme="dark"] .logo-mark,
+html[data-theme="dark"] .composer-preview p,
+html[data-theme="dark"] .btn-connect,
+html[data-theme="dark"] .post-text-bg p {
+    color: #17120D;
+}
+
+html[data-theme="dark"] .follow-btn,
+html[data-theme="dark"] .notif-type-badge {
+    color: #17120D;
+    border-color: #3A2C1E;
+}
+
+html[data-theme="dark"] .quick-post-icon {
+    background-color: #17120D;
+}
+
+html[data-theme="dark"] .btn-logout {
+    background-color: #C43D3D;
+    color: #17120D;
+    border-color: #3A2C1E;
+}
+
+/* html[data-theme="dark"] .comment-name,
+html[data-theme="dark"] .comment-text {
+    color: var(--soft);
+} */
+
+html[data-theme="dark"] .theme-btn.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #17120D;
+}
+
+html[data-theme="dark"] .ad-banner {
+    background: #17120D;
+    border-color: #3A2C1E;
+}
+
+html[data-theme="dark"] .ad-label {
+    background: var(--orange);
+    color: #fff;
+}
+
+html[data-theme="dark"] .ad-text h3,
+html[data-theme="dark"] .notif-header h1 {
+    color: var(--orange);
+}
+
+html[data-theme="dark"] .profile-sub,
+html[data-theme="dark"] .profile-stats,
+html[data-theme="dark"] .my-post-time,
+html[data-theme="dark"] .settings-hint,
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .nav-tab,
+html[data-theme="dark"] .input-icon-group label {
+    color: #C9BBAE;
+}

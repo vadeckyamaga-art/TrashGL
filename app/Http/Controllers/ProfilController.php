@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -163,6 +164,19 @@ class ProfilController extends Controller
         ]);
 
         Auth::user()->update(['language' => $validated['locale']]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updateTheme(Request $request)
+    {
+        $validated = $request->validate([
+            'theme' => ['required', 'in:light,dark,system'],
+        ]);
+
+        Auth::user()->update(['theme' => $validated['theme']]);
+
+        Cookie::queue('theme', $validated['theme'], 60 * 24 * 365 * 5); // 5 ans
 
         return response()->json(['success' => true]);
     }

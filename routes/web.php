@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profil/email/verify', [ProfilController::class, 'verifyEmailChanges'])->name('profil.email.verify');
     Route::post('/profil/email/cancel', [ProfilController::class, 'cancelEmailChange'])->name('profil.email.cancel');
     Route::post('/profil/locale', [ProfilController::class, 'updateLocale'])->name('profil.locale.update');
+    Route::post('/profil/theme', [ProfilController::class, 'updateTheme'])->name('profil.theme.update');
 });
 
 Route::middleware('auth')->group(function () {
