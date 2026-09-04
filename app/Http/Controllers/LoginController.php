@@ -35,6 +35,12 @@ class LoginController extends Controller
 
     }
 
+    public function rateLimiting (Request $request)
+    {
+        session()->forget(['rate_limit_expires_at', 'rate_limit_message']);
+        return response()->json(['success' => true]);
+    }
+
     public function logout (Request $request)
     {
         Auth::logout();

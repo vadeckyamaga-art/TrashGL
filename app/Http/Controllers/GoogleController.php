@@ -77,6 +77,7 @@ class GoogleController extends Controller
                     'email' => $googleUser->getEmail(),
                     'provider' => 'Google',
                     'provider_id' => $googleUser->getId(),
+                    'avatar_id' => User::randomAvatarId(),
                 ]);
                 $isNewAccount = true;
             }

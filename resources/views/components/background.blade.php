@@ -18,13 +18,22 @@
     <button type="button" class="swatch" style="background:linear-gradient(135deg,#1B3B6F,#0A1B33)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#1B3B6F,#0A1B33)" aria-label="Dégradé bleu"></button>
     <button type="button" class="swatch" style="background:linear-gradient(135deg,#D94F70,#7A1F3D)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#D94F70,#7A1F3D)" aria-label="Dégradé rose"></button>
     <button type="button" class="swatch" style="background:linear-gradient(135deg,#4A4A4A,#111111)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#4A4A4A,#111111)" aria-label="Dégradé charbon"></button>
+    <button type="button" class="swatch" style="background:linear-gradient(135deg,#FFD1B5,#4A1F2B)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#FFD1B5,#4A1F2B)" aria-label="Dégradé peche-rosé"></button>
+    <button type="button" class="swatch" style="background:linear-gradient(135deg,#A8D5E2,#0F2B3D)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#A8D5E2,#0F2B3D)" aria-label="Dégradé cyan-doux"></button>
+    <button type="button" class="swatch" style="background:linear-gradient(135deg,#C9E4C5,#0D2E1F)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#C9E4C5,#0D2E1F)" aria-label="Dégradé menthe-fraiche"></button>
+    <button type="button" class="swatch" style="background:linear-gradient(135deg,#E8D5F5,#2A1A3D)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#E8D5F5,#2A1A3D)" aria-label="Dégradé lavande"></button>
+    <button type="button" class="swatch" style="background:linear-gradient(135deg,#FDF2C2,#2C24A1)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#FDF2C2,#2C24A1)" aria-label="Dégradé doré-clair"></button>
+    <button type="button" class="swatch" style="background:linear-gradient(135deg,#FBC4C4,#4A1520)" data-bg-type="degrade" data-bg-value="linear-gradient(135deg,#FBC4C4,#4A1520)" aria-label="Dégradé corail-pastel"></button>
 </div>
 
 <div class="bg-picker gallery" id="picker-image" hidden>
-    <button type="button" class="gallery-thumb" style="background-image:url('https://picsum.photos/seed/amphi-g1/200/200')" data-bg-type="image" data-bg-value="https://picsum.photos/seed/amphi-g1/700/420" aria-label="Image 1"></button>
-    <button type="button" class="gallery-thumb" style="background-image:url('https://picsum.photos/seed/amphi-g2/200/200')" data-bg-type="image" data-bg-value="https://picsum.photos/seed/amphi-g2/700/420" aria-label="Image 2"></button>
-    <button type="button" class="gallery-thumb" style="background-image:url('https://picsum.photos/seed/amphi-g3/200/200')" data-bg-type="image" data-bg-value="https://picsum.photos/seed/amphi-g3/700/420" aria-label="Image 3"></button>
-    <button type="button" class="gallery-thumb" style="background-image:url('https://picsum.photos/seed/amphi-g4/200/200')" data-bg-type="image" data-bg-value="https://picsum.photos/seed/amphi-g4/700/420" aria-label="Image 4"></button>
-    <button type="button" class="gallery-thumb" style="background-image:url('https://picsum.photos/seed/amphi-g5/200/200')" data-bg-type="image" data-bg-value="https://picsum.photos/seed/amphi-g5/700/420" aria-label="Image 5"></button>
-    <button type="button" class="gallery-thumb" style="background-image:url('https://picsum.photos/seed/amphi-g6/200/200')" data-bg-type="image" data-bg-value="https://picsum.photos/seed/amphi-g6/700/420" aria-label="Image 6"></button>
+    @foreach ($backgroundImages as $image)
+        <button type="button" class="gallery-thumb"
+            style="background-image:url('{{ $image->thumbnail_url ?? $image->url }}')"
+            data-bg-type="image"
+            data-bg-value="{{ $image->url }}"
+            data-bg-image-id="{{ $image->id }}"
+            aria-label="Image de fond {{ $loop->iteration }}">
+        </button>
+    @endforeach
 </div>

@@ -72,6 +72,13 @@ class User extends Authenticatable
         return $pseudonym;
     }
 
+    public static function randomAvatarId(): ?int
+    {
+        return Avatar::where('is_active', true)
+                        ->inRandomOrder()
+                        ->value('id');
+    }
+
     //---------------------------- Relations ---------------------------------------
 
     public function posts()
@@ -109,6 +116,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id')
                 ->withTimestamps();
+    }
+
+    public function avatar()
+    {
+        return $this->belongsTo(Avatar::class);
     }
 
     //------------------------------------- Helpers ---------------------------------

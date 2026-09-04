@@ -1,6 +1,9 @@
-/* ---------- Mode sombre (démo, propre à cette page) ---------- */
-
 html[data-theme="dark"] body {
+    background: #171009;
+    color: #F2E9E0;
+}
+
+html[data-theme="dark"] .form-panel {
     background: #171009;
     color: #F2E9E0;
 }
@@ -14,7 +17,13 @@ html[data-theme="dark"] .amphi-toast {
 html[data-theme="dark"] .amphi-toast-error {
     border-left-color: #D9432E;
     font-weight: bolder;
-    color: #450A0A;
+    color: #D9432E;
+}
+
+html[data-theme="dark"] .amphi-toast-success {
+    border-left-color: #2FAE66;
+    font-weight: bolder;
+    color: #06602d;
 }
 
 html[data-theme="dark"] .post-composer,
@@ -45,12 +54,69 @@ html[data-theme="dark"] .btn-cancel-edit {
     color: #C9BBAE;
 }
 
+html[data-theme="dark"] .comment-bubble,
+html[data-theme="dark"] .action-btn[aria-expanded="true"] {
+    background: #17120D;
+    border: 2px solid #3A2C1E;
+}
+
+html[data-theme="dark"] .post-menu-dropdown {
+    background: #17120D;
+}
+
+html[data-theme="dark"] .post-menu-btn[aria-expanded="true"] {
+    background: #17120D;
+    color: #C9BBAE;
+    border: 2px solid #3A2C1E;
+}
+
+html[data-theme="dark"] .post-menu-btn[aria-expanded="false"] {
+    background: none;
+    color: #C9BBAE;
+}
+
+html[data-theme="dark"] .post-menu-dropdown li :hover {
+    background-color: #57391c;
+}
+
+html[data-theme="dark"] .action-btn[aria-expanded="false"] {
+    background: none;
+    border: none;
+    color: #8a7c70;
+}
+
+html[data-theme="dark"] .no-action[data-expanded="true"] {
+    background: #17120D;
+    border:  2px solid #3A2C1E;
+}
+
+html[data-theme="dark"] .no-action[data-expanded="false"] {
+    background: none;
+    border: none;
+    color: #8a7c70;
+}
+
+html[data-theme="dark"] .comment-text {
+    color: #fff;
+}
+
+html[data-theme="dark"] .comment-name,
+html[data-theme="dark"] .post-menu-item:not(.text-danger) {
+    color: rgb(122, 117, 117);
+    font-weight: lighter;
+}
+
 html[data-theme="dark"] .comment-submit,
 html[data-theme="dark"] .logo-mark,
 html[data-theme="dark"] .composer-preview p,
 html[data-theme="dark"] .btn-connect,
 html[data-theme="dark"] .post-text-bg p {
     color: #17120D;
+}
+
+html[data-theme="dark"] .btn-login:focus,
+html[data-theme="dark"] .btn-login:active:focus {
+    box-shadow: 0 0 0 0.25rem #f0712d !important;
 }
 
 html[data-theme="dark"] .follow-btn,
@@ -69,11 +135,6 @@ html[data-theme="dark"] .btn-logout {
     border-color: #3A2C1E;
 }
 
-/* html[data-theme="dark"] .comment-name,
-html[data-theme="dark"] .comment-text {
-    color: var(--soft);
-} */
-
 html[data-theme="dark"] .theme-btn.active {
     background: var(--orange);
     border-color: var(--orange);
@@ -91,8 +152,13 @@ html[data-theme="dark"] .ad-label {
 }
 
 html[data-theme="dark"] .ad-text h3,
-html[data-theme="dark"] .notif-header h1 {
+html[data-theme="dark"] .notif-header h1,
+html[data-theme="dark"] .profile-stats strong {
     color: var(--orange);
+}
+
+html[data-theme="dark"] .profile-avatar {
+    border: 3px solid var(--orange);
 }
 
 html[data-theme="dark"] .profile-sub,
@@ -102,5 +168,11 @@ html[data-theme="dark"] .settings-hint,
 html[data-theme="dark"] .section-title,
 html[data-theme="dark"] .nav-tab,
 html[data-theme="dark"] .input-icon-group label {
+    color: #C9BBAE;
+}
+
+html[data-theme="dark"] .btn-social {
+    background: #17120D;
+    border: 2px solid #3A2C1E;
     color: #C9BBAE;
 }

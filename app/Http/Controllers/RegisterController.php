@@ -75,7 +75,7 @@ class RegisterController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Cette adresse e-mail vient d\'être utilisée par un autre compte.'
+                'message' => 'Cette adresse e-mail est déja utilisée.'
             ], 409);
         }
 
@@ -83,6 +83,7 @@ class RegisterController extends Controller
             'name' => $pending['name'],
             'email' => $pending['email'],
             'password' => $pending['password'],
+            'avatar_id' => User::randomAvatarId(),
             'email_verified_at' => now(),
         ]);
 

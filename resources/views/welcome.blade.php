@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 </head>
 <body>
-    
+
     @include('components.nav')
 
     <!-- Fil de publications -->
@@ -18,13 +18,17 @@
             <span class="quick-post-icon"><i class="fa-solid fa-image"></i></span>
         </button>
 
-        @include('components.post-card')
+        {{-- @include('components.post-card') --}}
 
     </main>
 
-    <script src="{{ asset('js/Home.js') }}" defer></script>
-    <script src="{{ asset('js/messagesBox.js') }}" defer></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}" defer></script>
 
     @include('components.messages')
+
+    <script src="{{ asset('js/Home.js') }}" defer></script>
+    <script src="{{ asset('js/messagesBox.js') }}" defer></script>
+    <script src="{{ asset('js/post-card.js') }}" defer></script>
+
 </body>
 </html>

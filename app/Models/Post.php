@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Dom\Comment;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,15 +19,16 @@ class Post extends Model
         'content',
         'background_type',
         'background_value',
+        'background_image_id',
     ];
 
     #[Override]
     protected static function boot()
     {
-        return parent::boot();
+        parent::boot();
 
-        static::creating(function ($post){
-            $post->uuid = (string) Str::uuid();
+        static::creating(function ($post) {
+            $post->uuid = $post->uuid ?? (string) Str::uuid();
         });
     }
 
@@ -56,6 +57,11 @@ class Post extends Model
     public function report()
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    public function backgroundImage()
+    {
+        return $this->belongsTo(BackgroundImage::class);
     }
 
     //------------------- Helpers ------------------------------------------------

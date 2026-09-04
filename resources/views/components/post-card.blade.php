@@ -1,15 +1,21 @@
-<article class="post-card">
+@php
+    $isOwner = Auth::check() && $post->user_id === Auth::id();
+@endphp
+
+<article class="post-card" data-post-uuid="{{ $post->uuid }}" data-bg-type="{{ $post->background_type }}" data-bg-value="{{ $post->background_type === 'image' ? ($post->backgroundImage->url ?? '') : $post->background_value }}" data-bg-image-id="{{ $post->background_image_id }}">
     <header class="post-header">
         <div class="avatar-wrap">
-            <img src="https://i.pravatar.cc/150?img=12" alt="Photo de profil de Léa Kamdem" class="avatar">
-            <button type="button" class="follow-btn" aria-label="Suivre Léa Kamdem">
-                <i class="fa-solid fa-plus"></i>
-            </button>
+            <img src="https://i.pravatar.cc/150?img=5" alt="Avatar de {{ $post->user->pseudonym }}" class="avatar">
+            @unless ($isOwner)
+                <button type="button" class="follow-btn" aria-label="Suivre {{ $post->user->pseudonym }}">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            @endunless
         </div>
 
         <div class="post-identity">
-            <span class="post-name">Léa Kamdem</span>
-            <span class="post-time">Il y a 2 h · Promo Info 2026</span>
+            <span class="post-name">{{ $post->user->pseudonym }}</span>
+            <span class="post-time">{{ $post->created_at->diffForHumans() }}</span>
         </div>
 
         <div class="post-menu-wrap">
@@ -17,40 +23,48 @@
                 <i class="fa-solid fa-ellipsis"></i>
             </button>
             <ul class="post-menu-dropdown" hidden>
-                <li><button type="button" class="post-menu-item" data-action="edit"><i class="fa-solid fa-pen"></i> Modifier</button></li>
-                <li><button type="button" class="post-menu-item text-danger" data-action="delete"><i class="fa-solid fa-trash"></i> Supprimer</button></li>
-                <li><button type="button" class="post-menu-item" data-action="send"><i class="fa-solid fa-paper-plane"></i> Envoyer</button></li>
-                <li><button type="button" class="post-menu-item" data-action="copy-link"><i class="fa-solid fa-link"></i> Copier le lien</button></li>
-                <li><button type="button" class="post-menu-item text-danger" data-action="report"><i class="fa-solid fa-flag"></i> Signaler</button></li>
+                @if ($isOwner)
+                    <li><button type="button" class="post-menu-item" data-action="edit"><i class="fa-solid fa-pen"></i> Modifier</button></li>
+                    <li><button type="button" class="post-menu-item" data-action="send"><i class="fa-solid fa-paper-plane"></i> Envoyer</button></li>
+                    <li><button type="button" class="post-menu-item" data-action="copy-link"><i class="fa-solid fa-link"></i> Copier le lien</button></li>
+                    <li><button type="button" class="post-menu-item text-danger" data-action="delete"><i class="fa-solid fa-trash"></i> Supprimer</button></li>
+                @else
+                    <li><button type="button" class="post-menu-item" data-action="send"><i class="fa-solid fa-paper-plane"></i> Envoyer</button></li>
+                    <li><button type="button" class="post-menu-item" data-action="copy-link"><i class="fa-solid fa-link"></i> Copier le lien</button></li>
+                    <li><button type="button" class="post-menu-item text-danger" data-action="report"><i class="fa-solid fa-flag"></i> Signaler</button></li>
+                @endif
             </ul>
         </div>
     </header>
 
-    <div class="post-text-bg" style="background-image: linear-gradient(180deg, rgba(30,20,10,0.15), rgba(20,12,6,0.65)), url('https://picsum.photos/seed/amphi-revisions/700/420');">
-        <p>Qui d'autre est encore à la BU un dimanche soir ? Courage à toute la promo pour les partiels 💪</p>
+    <div class="post-text-bg"
+        style="@if($post->background_type === 'image')background-image: linear-gradient(180deg, rgba(30,20,10,0.15), rgba(20,12,6,0.65)), url('{{ $post->backgroundImage->url ?? '' }}');@else background:{{ $post->background_value }};@endif">
+        <p>{{ $post->content }}</p>
     </div>
 
     <footer class="post-actions">
-        <button type="button" class="action-btn">
-            <i class="fa-solid fa-heart"></i> J'aime <span class="count">38</span>
+        <button type="button" class="action-btn no-action" data-expanded="false">
+            <i class="fa-solid fa-heart"></i> J'aime <span class="count">{{ $post->likes()->count() }}</span>
         </button>
         <button type="button" class="action-btn btn-comment-toggle" aria-expanded="false">
-            <i class="fa-solid fa-comment"></i> Commenter <span class="count">9</span>
+            <i class="fa-solid fa-comment"></i> Commenter <span class="count">{{ $post->comments()->count() }}</span>
         </button>
-        <button type="button" class="action-btn">
+        <button type="button" class="action-btn no-action" data-expanded="false">
             <i class="fa-solid fa-share"></i> Partager
         </button>
     </footer>
 
     <div class="comments-section" hidden>
         <div class="comments-list">
-            <div class="comment">
-                <img src="https://i.pravatar.cc/150?img=21" alt="Photo de profil de Junior Abanda" class="comment-avatar">
-                <div class="comment-bubble">
-                    <span class="comment-name">Junior Abanda</span>
-                    <p class="comment-text">Courage, on y est presque 💪</p>
+            @foreach ($post->comments()->latest()->get() as $comment)
+                <div class="comment">
+                    <img src="https://i.pravatar.cc/150?img=21" alt="Avatar" class="comment-avatar">
+                    <div class="comment-bubble">
+                        <span class="comment-name">{{ $comment->user->pseudonym }}</span>
+                        <p class="comment-text">{{ $comment->content }}</p>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
         <div class="comment-form">
             <img src="https://i.pravatar.cc/150?img=5" alt="Ta photo de profil" class="comment-avatar">
@@ -61,5 +75,3 @@
         </div>
     </div>
 </article>
-
-<script src="{{ asset('js/post-card.js') }}" defer></script>

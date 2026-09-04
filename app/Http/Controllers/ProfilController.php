@@ -10,14 +10,11 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
+use App\Models\BackgroundImage;
 use Laravel\Socialite\Facades\Socialite;
 
 class ProfilController extends Controller
 {
-    public function editProfil () {
-        return view('profil', ['user' => Auth::user()]);
-    }
-
     public function updateProfil (Request $request) {
         $user = Auth::user();
 
@@ -179,5 +176,14 @@ class ProfilController extends Controller
         Cookie::queue('theme', $validated['theme'], 60 * 24 * 365 * 5); // 5 ans
 
         return response()->json(['success' => true]);
+    }
+
+    public function editProfil()
+    {
+        $user = Auth::user();
+        $posts = $user->posts()->latest()->get();
+        $backgroundImages = BackgroundImage::where('is_active', true)->get();
+
+        return view('profil', compact('user', 'posts', 'backgroundImages'));
     }
 }

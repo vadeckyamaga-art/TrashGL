@@ -40,6 +40,7 @@ var postText = document.getElementById('post-text');
 var publishBtn = document.getElementById('publish-btn');
 var cancelBtn = document.getElementById('cancel-edit');
 var myPosts = document.getElementById('my-posts');
+var postUrl = document.querySelector('.post-composer form').dataset.postUrl;
 
 function appliquerFondAperçu() {
     if (composer.type === 'image') {
@@ -74,6 +75,7 @@ document.querySelectorAll('.bg-picker .swatch, .bg-picker .gallery-thumb').forEa
 
         composer.type = option.dataset.bgType;
         composer.value = option.dataset.bgValue;
+        composer.imageId = option.dataset.bgImageId || null;
         appliquerFondAperçu();
     });
 });
@@ -102,45 +104,57 @@ function styleCouleurCarte(type, value) {
 }
 
 // Publier ou enregistrer une modification
+var postBaseUrl = document.querySelector('.post-composer form').dataset.postBaseUrl;
 publishBtn.addEventListener('click', function () {
     var texte = postText.value.trim();
     if (texte === '') { postText.focus(); return; }
 
-    if (composer.editingId) {
-        var carte = myPosts.querySelector('[data-post-id="' + composer.editingId + '"]');
-        carte.dataset.bgType = composer.type;
-        carte.dataset.bgValue = composer.value;
-        var fondDiv = carte.querySelector('.my-post-bg');
-        fondDiv.style.backgroundImage = fondPourCarte(composer.type, composer.value);
-        fondDiv.style.backgroundColor = composer.type === 'image' ? '' : composer.value;
-        fondDiv.querySelector('p').textContent = texte;
-        carte.querySelector('.my-post-time').textContent = 'Modifié à l\'instant';
-        showToast('Publication modifiée.', 'success');
-    } else {
-        var id = 'p' + Date.now();
-        var article = document.createElement('article');
-        article.className = 'my-post-card';
-        article.dataset.postId = id;
-        article.dataset.bgType = composer.type;
-        article.dataset.bgValue = composer.value;
+    var payload = {
+        content: texte,
+        background_type: composer.type,
+        background_value: composer.type === 'image' ? null : composer.value,
+        background_image_id: composer.type === 'image' ? composer.imageId : null
+    };
 
-        article.innerHTML =
-        '<div class="my-post-bg" style="background-image:' + fondPourCarte(composer.type, composer.value) + ';' + styleCouleurCarte(composer.type, composer.value) + '">' +
-        '<p></p></div>' +
-        '<div class="my-post-meta">' +
-        '<span class="my-post-time">À l\'instant · 0 j\'aime · 0 commentaire</span>' +
-        '<div class="my-post-tools">' +
-        '<button type="button" class="tool-btn edit-post" aria-label="Modifier la publication"><i class="fa-solid fa-pen"></i></button>' +
-        '<button type="button" class="tool-btn delete-post" aria-label="Supprimer la publication"><i class="fa-solid fa-trash"></i></button>' +
-        '</div></div>';
+    publishBtn.disabled = true;
 
-        article.querySelector('.my-post-bg p').textContent = texte;
-        myPosts.insertBefore(article, myPosts.firstChild);
-        attacherOutilsCarte(article);
-        showToast('Publication créée.', 'success');
-    }
+    var url = composer.editingId ? (postBaseUrl + '/' + composer.editingId) : postUrl;
+    var method = composer.editingId ? 'PATCH' : 'POST';
 
-    reinitialiserComposeur();
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(function (response) { return response.json(); })
+    .then(function (data) {
+        if (!data.success) { throw data; }
+
+        if (composer.editingId) {
+            var ancienneCarte = myPosts.querySelector('[data-post-uuid="' + composer.editingId + '"]');
+            ancienneCarte.outerHTML = data.html;
+            var carteMiseAJour = myPosts.querySelector('[data-post-uuid="' + composer.editingId + '"]');
+            attacherOutilsCarte(carteMiseAJour);
+            showToast('Publication modifiée.', 'success');
+        } else {
+            myPosts.insertAdjacentHTML('afterbegin', data.html);
+            var nouvelleCarte = myPosts.querySelector('article');
+            attacherOutilsCarte(nouvelleCarte);
+            showToast('Publication créée.', 'success');
+        }
+
+        reinitialiserComposeur();
+    })
+    .catch(function () {
+        showToast('Une erreur est survenue, veuillez réessayer.', 'error');
+    })
+    .finally(function () {
+        publishBtn.disabled = false;
+    });
 });
 
 function reinitialiserComposeur() {
@@ -155,14 +169,19 @@ cancelBtn.addEventListener('click', reinitialiserComposeur);
 
 // Modifier / supprimer une publication existante
 function attacherOutilsCarte(carte) {
-    carte.querySelector('.edit-post').addEventListener('click', function () {
-        var texte = carte.querySelector('.my-post-bg p').textContent;
+    var editBtn = carte.querySelector('[data-action="edit"]');
+    var deleteBtn = carte.querySelector('[data-action="delete"]');
+
+    if (!editBtn || !deleteBtn) return; // carte d'un autre utilisateur, pas d'outils d'édition
+
+    editBtn.addEventListener('click', function () {
+        var texte = carte.querySelector('.post-text-bg p').textContent;
         postText.value = texte;
         previewText.textContent = texte;
 
         composer.type = carte.dataset.bgType;
         composer.value = carte.dataset.bgValue;
-        composer.editingId = carte.dataset.postId;
+        composer.editingId = carte.dataset.postUuid;
 
         appliquerFondAperçu();
         publishBtn.textContent = 'Enregistrer les modifications';
@@ -171,11 +190,29 @@ function attacherOutilsCarte(carte) {
         document.querySelector('.post-composer').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    carte.querySelector('.delete-post').addEventListener('click', function () {
-        if (confirm('Supprimer définitivement cette publication ?')) {
-        carte.remove();
-        showToast('Publication supprimée.', 'success');
+    deleteBtn.addEventListener('click', function () {
+        if (!confirm('Supprimer définitivement cette publication ?')) {
+            return;
         }
+
+        var uuid = carte.dataset.postUuid;
+
+        fetch(postBaseUrl + '/' + uuid, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+            if (!data.success) { throw data; }
+            carte.remove();
+            showToast('Publication supprimée.', 'success');
+        })
+        .catch(function () {
+            showToast('Impossible de supprimer, veuillez réessayer.', 'error');
+        });
     });
 }
 

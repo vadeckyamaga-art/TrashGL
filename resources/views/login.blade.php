@@ -1,8 +1,9 @@
 @include('components.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <title>TrashGl - Connexion</title>
 </head>
-<body>
+<body data-theme-url="{{ route('profil.theme.update') }}" id="loginBody">
 
     {{-- <pre style="background: yellow; color:black; padding: 10px">
         DEBUG ERRORS: {{ $errors->any() ? 'OUI - '.$errors->first(): 'NON' }}
@@ -75,8 +76,8 @@
                         @csrf
 
                         <div class="form-floating mb-3 input-icon-group">
-                            <input type="email" class="form-control" id="adresse" name="email" value="{{ old('email') }}" placeholder="nom@etablissement.fr" required>
-                            <label for="adresse"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="nom@etablissement.fr" required>
+                            <label for="email"><i class="fa-solid fa-envelope"></i> Adresse e-mail</label>
                         </div>
 
                         <div class="form-floating mb-3 input-icon-group">
@@ -93,7 +94,7 @@
                             <a href="#" class="link-forgot">Mot de passe oublié ?</a>
                         </div>
 
-                        <button type="submit" class="btn btn-connect w-100">Se connecter</button>
+                        <button type="submit" class="btn btn-connect btn-login w-100">Se connecter</button>
 
                         @include('components.social-connect-button')
 
@@ -104,7 +105,6 @@
             </div>
         </div>
     </div>
-
 
     <script src="{{ asset('js/messagesBox.js') }}" defer></script>
     <script src="{{ asset('js/togglePassword.js') }}" defer></script>

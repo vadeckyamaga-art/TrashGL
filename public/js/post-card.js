@@ -15,4 +15,15 @@ document.addEventListener('click', function (e) {
         dropdown.hidden = isOpen;
         menuBtn.setAttribute('aria-expanded', String(!isOpen));
     }
+
+    const buttons = document.querySelectorAll('.no-action');
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            buttons.forEach(btn => {
+                btn.dataset.expanded = "false";
+            });
+            button.dataset.expanded = "true";
+        });
+    });
+
 });

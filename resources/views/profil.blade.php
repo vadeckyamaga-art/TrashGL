@@ -10,7 +10,7 @@
     <main class="profile-page">
         <!-- En-tête profil -->
         <section class="profile-header">
-            <img src="https://i.pravatar.cc/150?img=5" alt="Ta photo de profil" class="profile-avatar">
+            <img src="{{ $user->avatar->url ?? 'https://i.pravatar.cc/150?img=1' }}" alt="Ta photo de profil" class="profile-avatar">
             <div class="profile-identity">
                 <h1>{{ $user->pseudonym }}</h1>
                 <p class="profile-sub">{{ $user->name }}</p>
@@ -40,7 +40,7 @@
             <div class="post-composer">
 
                 <h2>Créer une publication</h2>
-                <form action="" method="POST">
+                <form action="" method="POST" data-post-url="{{ route('posts.store') }}" data-post-base-url="{{ url('/posts') }}>
                     @csrf
 
                     <textarea id="post-text" class="composer-textarea" maxlength="240" placeholder="Exprime-toi devant toute la promo..."></textarea>
@@ -67,7 +67,7 @@
 
                     <div class="composer-actions">
                         <button type="button" id="cancel-edit" class="btn-cancel-edit" hidden>Annuler</button>
-                        <button type="submit" id="publish-btn" class="btn btn-connect">Publier</button>
+                        <button type="button" id="publish-btn" class="btn btn-connect">Publier</button>
                     </div>
                 </form>
             </div>
@@ -75,10 +75,13 @@
             <h2 class="section-title">Mes publications</h2>
 
             <div class="my-posts" id="my-posts">
-
-                @include('components.post-card')
-
+                @forelse ($posts as $post)
+                    @include('components.post-card', ['post' => $post])
+                @empty
+                    <p class="settings-hint">Tu n'as encore publié aucune anecdote.</p>
+                @endforelse
             </div>
+
         </section>
 
         <!-- ============ Sous-onglet : Paramètres ============ -->
@@ -150,7 +153,7 @@
                 </div>
             @endif
 
-            <form id="langForm" data-locale-url="{{ route('profil.locale.update') }}>
+            <form id="langForm" data-locale-url="{{ route('profil.locale.update') }}">
                 @csrf
 
                 <div class="settings-card">
@@ -158,7 +161,7 @@
                     <select class="form-select lang-select" name="locale">
                         <option value="" selected disabled>-- Choisissez la langue --</option>
                         <option value="fr" @selected($user->locale === 'fr')>Français</option>
-                        <option value="fr" @selected($user->locale === 'fr')>English</option>
+                        <option value="en" @selected($user->locale === 'fr')>English</option>
                     </select>
                 </div>
             </form>
@@ -205,6 +208,7 @@
     <script src="{{ asset('js/profil-locale.js') }}" defer></script>
     <script src="{{ asset('js/profil.js') }}" defer></script>
     <script src="{{ asset('js/theme.js') }}" defer></script>
+    <script src="{{ asset('js/post-card.js') }}" defer></script>
 
 </body>
 </html>
